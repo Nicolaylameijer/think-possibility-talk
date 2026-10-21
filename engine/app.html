@@ -588,7 +588,7 @@ function kitText(){
   L.push("## 7. Build your own "+N2,"");
   if(guide&&guide.name===N2&&guide.text) L.push(guide.text.replace(/^# .*\n+/,"").trimEnd());
   else L.push("Download the full guide here: "+location.origin+guideHref());
-  return L.join("\n").replace(/[\u2013\u2014]/g,",")+"\n";
+  return L.join("\n")+"\n";
 }
 function downloadKit(){
   const txt=kitText();

@@ -269,8 +269,8 @@ const PFX = BR.slug;
 const EVENT = BR.title+(BR.audience?", "+BR.audience:"");
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const noDash=s=>String(s==null?"":s).replace(/\s*\u2014\s*/g,", ").replace(/(\d)\s*\u2013\s*(\d)/g,"$1 to $2");
-const T=s=>esc(noDash(s));
+const txt=s=>String(s==null?"":s);
+const T=s=>esc(txt(s));
 const VID=(()=>{ try{ let v=sessionStorage.getItem(PFX+"-fv"); if(!v){ v=Math.random().toString(36).slice(2,12); sessionStorage.setItem(PFX+"-fv",v); } return v; }catch(e){ return Math.random().toString(36).slice(2,12); } })();
 const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const CHEV='<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>';
@@ -331,16 +331,16 @@ function summaryText(max){
   const done=new Set(S.done), LN=[];
   LN.push(EVENT,(BR.presenter?BR.presenter+", ":"")+today(),"");
   C.chapters.forEach(c=>{
-    LN.push(noDash(c.n+" "+c.title).toUpperCase());
+    LN.push(txt(c.n+" "+c.title).toUpperCase());
     c.reqs.forEach(r=>{
-      LN.push((MINE[r.id]?"[x] ":"[ ] ")+r.id+" "+noDash(r.text)+(done.has(r.id)?" ("+SHOWN+")":""));
-      if(done.has(r.id)&&r.outcome) LN.push("   "+noDash(r.outcome));
+      LN.push((MINE[r.id]?"[x] ":"[ ] ")+r.id+" "+txt(r.text)+(done.has(r.id)?" ("+SHOWN+")":""));
+      if(done.has(r.id)&&r.outcome) LN.push("   "+txt(r.outcome));
       if(NOTES[r.id]) LN.push("   My note: "+NOTES[r.id].trim().replace(/\n+/g," "));
     });
-    if(c.use&&c.use.who&&!c.use.honest) LN.push("   Story: "+noDash(c.use.who)+(c.url?" ("+c.url+")":""));
+    if(c.use&&c.use.who&&!c.use.honest) LN.push("   Story: "+txt(c.use.who)+(c.url?" ("+c.url+")":""));
     LN.push("");
   });
-  if((C.prompts||[]).length){ LN.push(noDash(L.promptsTitle).toUpperCase()+" (full text on the follow-along page)"); C.prompts.forEach(p=>LN.push("   "+p.id+" "+noDash(p.title))); LN.push(""); }
+  if((C.prompts||[]).length){ LN.push(txt(L.promptsTitle).toUpperCase()+" (full text on the follow-along page)"); C.prompts.forEach(p=>LN.push("   "+p.id+" "+txt(p.title))); LN.push(""); }
   LN.push("Follow-along page: "+location.origin+"/follow");
   let t=LN.join("\n");
   if(max&&t.length>max){ // keep notes, drop story lines first
@@ -489,7 +489,7 @@ function apply(silent){
     else p.hidden=true;
   });
   const nl=$("#now");
-  if(now!=null){ nl.textContent="Now: "+noDash(C.chapters[now].title); nl.href="#ch"+now; } else { nl.textContent=shown?"":"Starting soon"; nl.removeAttribute("href"); }
+  if(now!=null){ nl.textContent="Now: "+txt(C.chapters[now].title); nl.href="#ch"+now; } else { nl.textContent=shown?"":"Starting soon"; nl.removeAttribute("href"); }
   if(now!=null && now!==lastNow && !first && Date.now()-userScrolledAt>6000){
     $("#ch"+now).scrollIntoView({behavior:"smooth",block:"start"}); }
   lastNow=now;

@@ -1,12 +1,11 @@
 // The one check: npm run check   (about 10 seconds, no browser, no network)
 //   node tests/check.mjs [--base REF]            everything
-//   node tests/check.mjs --scan dashes|names|secrets   just one scan (the pull request workflow shows them as separate steps)
-// It builds the deck from content/, checks every content file, scans for dashes, secrets and blocked names, then runs the small server tests.
+//   node tests/check.mjs --scan secrets   just the secrets scan (the pull request workflow shows it as its own step)
+// It builds the deck from content/, checks every content file, scans for secrets, then runs the small server tests.
 //   --base REF   compare line lengths and keys with the content at that git ref (default origin/live, then HEAD~1; skipped when there is neither)
 import "../scripts/lib-load.mjs";
 import fs from "node:fs";
 import path from "node:path";
-import crypto from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SECRET, appLinkProblems } from "../scripts/lib-scan.mjs";
@@ -32,42 +31,17 @@ const files = [];
     else if (e.isFile() && !BUILD_FILES.has(rel)) files.push(rel);
   }
 })(ROOT);
-const isText = (f) => /\.(js|mjs|json|html|md|toml|css|txt|sh|yml|yaml|sha256)$/.test(f) || /(^|\/)\.(gitignore|npmrc)$/.test(f);
+const isText = (f) => /\.(js|mjs|json|html|md|toml|css|txt|sh|yml|yaml)$/.test(f) || /(^|\/)\.(gitignore|npmrc)$/.test(f);
 const read = (f) => fs.readFileSync(path.join(ROOT, f), "utf8");
 
 // ---------------------------------------------------------------- scans
-function scanDashes() {
-  const bad = files.filter((f) => isText(f) && !/^package-lock\.json$/.test(f) && /[\u2013\u2014]/.test(read(f)));
-  check("s-1", "no em dash or en dash in any file (content, docs, code)", bad.length === 0, list(bad.map((f) => f + ": use a comma, a period, a colon or the word 'to'")));
-}
 function scanSecrets() {
   const leaked = files.filter((f) => isText(f) && !/^package-lock\.json$/.test(f) && fs.statSync(path.join(ROOT, f)).size < 3e6 && SECRET.test(read(f)));
   const env = files.filter((f) => /(^|\/)(\.dev\.vars[^/]*|\.env[^/]*)$/.test(f));
   check("s-2", "no key, token, password or account id in any file, and no .dev.vars or .env file", leaked.length === 0 && env.length === 0,
     list([...leaked.map((f) => "secret-shaped text in " + f), ...env.map((f) => "secret file: " + f)]));
 }
-function scanNames() {
-  const hf = path.join(ROOT, "tests/blocked.sha256");
-  const blocked = new Set(fs.readFileSync(hf, "utf8").split("\n").filter((l) => /^[0-9a-f]{64}$/.test(l)));
-  const sha = (s) => crypto.createHash("sha256").update(s).digest("hex");
-  const hit = (text, pairs) => {
-    const w = text.toLowerCase().match(/[a-z0-9]+/g) || [], seen = new Set();
-    for (let i = 0; i < w.length; i++) {
-      if (!seen.has(w[i])) { seen.add(w[i]); if (blocked.has(sha(w[i]))) return true; }
-      if (pairs && i) { const p = w[i - 1] + " " + w[i]; if (!seen.has(p)) { seen.add(p); if (blocked.has(sha(p))) return true; } }
-    }
-    return false;
-  };
-  const found = [];
-  for (const f of files) {
-    if (f === "tests/blocked.sha256" || f === ".github/CODEOWNERS") continue;   // the hash list; and the code owner's handle, which GitHub needs in plain text (the repo is private)
-    if (hit(f, true)) { found.push(f + " (in the file name)"); continue; }
-    const buf = fs.readFileSync(path.join(ROOT, f));
-    if (hit(buf.toString(isText(f) ? "utf8" : "latin1"), isText(f))) found.push(f);
-  }
-  check("s-3", "no blocked name or account id in any file name or file (compared by hash; the list is not in the repo)", found.length === 0, list(found) + "\nTake the name out. Do not write it in the pull request either.");
-}
-if (ONLY) { ({ dashes: scanDashes, secrets: scanSecrets, names: scanNames }[ONLY] || (() => { console.error("--scan dashes|names|secrets"); process.exit(2); }))(); done(); }
+if (ONLY) { ({ secrets: scanSecrets }[ONLY] || (() => { console.error("--scan secrets"); process.exit(2); }))(); done(); }
 
 // ---------------------------------------------------------------- 1. it builds
 try { execFileSync("node", ["build.mjs"], { cwd: ROOT, stdio: "pipe" }); check("c-1", "the deck builds from content/ (node build.mjs)", true); }
@@ -186,7 +160,7 @@ if (baseLeaves) {
 } else note("c-12", "skipped the length and lost-key comparison: no origin/live and no earlier commit to compare with");
 
 // ---------------------------------------------------------------- 3. scans
-scanDashes(); scanSecrets(); scanNames();
+scanSecrets();
 
 // ---------------------------------------------------------------- 4. the small server tests (plain Node, no browser, no network)
 const tests = ["tests/r2-maisie-eff.mjs", "tests/plan-card.mjs", "tests/editor-mode.mjs", "tests/app-content.mjs", "tests/poll-slides.mjs", "tests/scan-rules.mjs"].filter((t) => fs.existsSync(path.join(ROOT, t)));

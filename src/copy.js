@@ -77,7 +77,7 @@ const withPartners = (edits) => {
 
 // ---------------------------------------------------------------- cleaning
 const cleanText = (v) => String(v == null ? "" : v).replace(/[\u0000-\u001f\u007f\u2028\u2029]/g, " ").replace(/[<>]/g, "")
-  .replace(/[\u2013\u2014]/g, ", ").replace(/\s+/g, " ").trim();
+  .replace(/\s+/g, " ").trim();
 const maxLen = (key) => Math.min(1200, Math.max(300, 3 * String(SHIPPED[key] || "").length));
 const cleanSize = (v) => { const n = Number(v); if (!isFinite(n)) return null; return Math.round(Math.max(SIZE_MIN, Math.min(SIZE_MAX, n)) * 20) / 20; };
 

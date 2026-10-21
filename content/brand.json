@@ -1,0 +1,53 @@
+{
+  "slug": "think-possibility",
+  "presenter": "Aran Raz",
+  "audience": "Arizona State Capitol Chapter of NIGP",
+  "title": "Think Possibility, Not Probability",
+  "subtitle": "What can you do with an AI thought partner? Follow the slides, keep a checklist, or talk to Maisie. You can switch any time.",
+  "checklistIntro": "Check off what you have seen, copy each prompt, and add your own notes.",
+  "footer": "Part II · Arizona State Capitol Chapter of NIGP",
+  "logos": [
+    {
+      "src": "logo-on-light.jpg",
+      "dark": "logo-on-dark.png",
+      "alt": "Gov AI Pro",
+      "big": true
+    }
+  ],
+  "colors": {
+    "primary": "#e25c0f",
+    "bright": "#e7a23c",
+    "accent": "#1E7A3C",
+    "dark": "#15233b",
+    "warm": "#c44a06",
+    "code": "#0f1a2e"
+  },
+  "font": "Public Sans",
+  "labels": {
+    "item": "takeaway",
+    "items": "takeaways",
+    "presenterWord": "speaker",
+    "shown": "Shown",
+    "markShown": "Mark shown",
+    "comingUp": "Coming up",
+    "nowShowing": "Now on",
+    "allShown": "All shown",
+    "highlighted": "Key takeaway",
+    "highlightedHere": "Includes a key takeaway",
+    "story": "Story",
+    "problem": "The problem",
+    "straight": "The guardrail",
+    "youWillSee": "What comes next",
+    "here": "Try it yourself",
+    "showed": "the takeaways",
+    "askTitle": "Ask a question",
+    "askSub": "Opens the live Q&A. The top questions get answered at the end.",
+    "learnMore": "Get the prompt",
+    "orgField": "Agency",
+    "watchBlurb": "The slides move with the speaker, and each takeaway ticks off as it is shown. Nothing to click.",
+    "checklistBlurb": "Check off what you have seen, copy each prompt, and add your own notes.",
+    "followupConsent": "It is OK for Aran to follow up with me",
+    "privacy": "Aran keeps your name and email and only follows up if you tick the box. Your notes stay on your phone.",
+    "nextChapter": "Next part"
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "P1",
+    "t": "Move 1, Challenge my assumptions",
+    "note": "Your turn: Identify an assumption worth testing, run the prompt. What assumptions had you not considered?",
+    "text": "List the key assumptions in this plan. Rank their consequences if wrong. Separate facts from guesses. Which assumption should we test first, and how?"
+  },
+  {
+    "id": "P2",
+    "t": "Move 2, Invert it. Write the protest first.",
+    "note": "Your turn: run it on your decision. Which risk would you rather have heard from the tool than from the vendor?",
+    "text": "Review this approach as a red-team reviewer. Identify legal, ethical, competition, protest, operational and value risks. Then write the strongest protest letter a losing vendor could file. Then tell me what would make each point fail."
+  },
+  {
+    "id": "P3",
+    "t": "Move 3, Multiply the options. Ask for the bad ones too.",
+    "note": "Your turn: Choose an unexpected option and consider how you would test it.",
+    "text": "Give me ten options to get this outcome. Include three a procurement office would never seriously consider. Then tell me which of those three deserves a second look, and what would have to be true for it to work."
+  },
+  {
+    "id": "P4",
+    "t": "Move 4, Rehearse the conversation you're dreading",
+    "note": "Your turn: Pick the person you least want to have this conversation with. Three exchanges. Then ask what you missed.",
+    "text": "Play the department director who wants a bid waiver for software they have already chosen and thinks procurement is the obstacle. Raise realistic concerns and acknowledge sound answers. After three exchanges, assess my listening, clarity, and unresolved assumptions."
+  }
+]

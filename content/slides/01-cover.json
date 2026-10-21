@@ -1,0 +1,24 @@
+{
+  "id": "cover",
+  "builds": "click",
+  "t": "open",
+  "dark": true,
+  "kick": "PART II · 2:40 PM · ROOM 166/167",
+  "title": "Think Possibility, Not Probability",
+  "em": "Possibility, Not",
+  "sub": "What can you do with an AI thought partner?",
+  "meta": [
+    "Aran D Raz",
+    "Arizona State Capitol Chapter of NIGP · 37th Annual Regional Conference · October 22, 2026"
+  ],
+  "portrait": {
+    "img": "img/maisie.jpg",
+    "alt": "Maisie, Aran's AI assistant",
+    "cap": "Maisie, Aran's AI assistant"
+  },
+  "ticks": ["W1"],
+  "notes": [
+    "2:40. One minute. Welcome back the people who were here this morning, and welcome the ones who were not. Say it plainly: this morning was about getting AI to understand how you work. This afternoon is about what you can do once it does. If you missed Part I, you can still play. Every exercise today works with a blank chat, it just works better with a brief. The promise: fifty minutes, four moves, and you leave with at least one thing you will try this week that you have never asked an AI to do. Transition: \"First, a confession about how these tools actually work.\""
+  ],
+  "sizes": {"title": 1.1}
+}

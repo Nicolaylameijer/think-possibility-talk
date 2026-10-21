@@ -1,0 +1,19 @@
+{
+  "name": "possibility-live",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && wrangler dev --local",
+    "check": "node tests/check.mjs",
+    "fold": "node scripts/fold.mjs",
+    "verify-fold": "node scripts/verify-fold.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.0",
+    "qrcode-generator": "^1.5.2",
+    "wrangler": "^4.149.0",
+    "ws": "^8.18.0"
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Claude",
+    "by": "From Anthropic",
+    "site": "https://claude.ai",
+    "ios": "https://apps.apple.com/us/app/claude-by-anthropic/id6473753684",
+    "android": "https://play.google.com/store/apps/details?id=com.anthropic.claude"
+  },
+  {
+    "name": "ChatGPT",
+    "by": "From OpenAI",
+    "site": "https://chatgpt.com",
+    "ios": "https://apps.apple.com/us/app/chatgpt/id6448311069",
+    "android": "https://play.google.com/store/apps/details?id=com.openai.chatgpt"
+  },
+  {
+    "name": "Gemini",
+    "by": "From Google",
+    "site": "https://gemini.google.com",
+    "ios": "https://apps.apple.com/us/app/google-gemini/id6477489729",
+    "android": "https://play.google.com/store/apps/details?id=com.google.android.apps.bard"
+  },
+  {"name": "Grok", "by": "From xAI", "site": "https://grok.com", "ios": "", "android": ""},
+  {
+    "name": "Microsoft Copilot",
+    "by": "From Microsoft",
+    "site": "https://copilot.microsoft.com",
+    "ios": "",
+    "android": ""
+  },
+  {
+    "name": "Perplexity",
+    "by": "Answers with sources",
+    "site": "https://www.perplexity.ai",
+    "ios": "",
+    "android": ""
+  }
+]

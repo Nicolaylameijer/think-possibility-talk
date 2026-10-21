@@ -1,0 +1,38 @@
+{
+  "order": [
+    "cover",
+    "confession",
+    "ladder",
+    "pulse",
+    "where",
+    "system",
+    "principles",
+    "move1",
+    "move2",
+    "move3",
+    "move4",
+    "movecheck",
+    "guardrails",
+    "thisweek",
+    "pledge",
+    "close",
+    "walkout"
+  ],
+  "hidden": [],
+  "keepPhoneCard": [],
+  "autoplay": {
+    "confession": false,
+    "ladder": false,
+    "where": false,
+    "system": false,
+    "move4": false,
+    "principles": false,
+    "move1": false,
+    "move2": false,
+    "move3": false,
+    "guardrails": false,
+    "thisweek": false,
+    "close": false,
+    "walkout": false
+  }
+}

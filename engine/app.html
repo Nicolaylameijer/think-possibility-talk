@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#15233b">
+<link rel="icon" href="data:,">
+<title>Notes and resources</title>
+<link rel="preload" href="/fonts/publicsans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fraunces-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/ui.css">
+<style>
+/* Round 2, design C "One thing at a time", light restyle. The phone shows one thing, full screen, on a light page
+   (the v4 light tokens in /ui.css): white cards, navy ink, orange only on buttons and marks, green only for success.
+   A live poll is the poll.js takeover (white screen, orange top bar, orange-outlined answers). Every state also says so in
+   words in the pill at the top. Fraunces for the one big line per screen, Public Sans for everything else. */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--deep);color:var(--fg);font:400 17px/1.45 var(--sans);-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;height:100dvh}
+button,input,a{font:inherit;color:inherit;touch-action:manipulation}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;border:0;background:none;padding:0;text-align:left}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.btn:focus-visible,.chip.solid:focus-visible,.move .cp:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+h1,h2,h3,p{margin:0}
+
+/* the pill: where you are, in words, and the two ways out */
+/* the header: the navy bar of Notes and resources, with the room's state in words and the five tabs */
+:root{--hd:#15233b;--tab:#e25c0f}
+.top{flex:none;background:var(--hd);color:#fff;padding:calc(12px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left));position:relative;z-index:5}
+.top .row{display:flex;align-items:center;gap:12px;max-width:680px;margin:0 auto}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:#5fd38a;box-shadow:0 0 0 5px rgba(95,211,138,.2)}
+.dot.off{background:#9aa6bd;box-shadow:none}
+.where{flex:1;min-width:0;line-height:1.22}
+.where b{display:block;font:600 21px/1.15 var(--serif);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.where span{display:block;font-size:14px;color:rgba(255,255,255,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;gap:2px;max-width:680px;margin:8px auto 0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;min-height:52px;padding:0 14px;font-weight:600;font-size:15px;color:rgba(255,255,255,.82);border-bottom:4px solid transparent;text-align:center;white-space:nowrap}
+.tabs button[aria-selected=true]{color:#fff;border-bottom-color:var(--tab)}
+.tabs button:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.tabs .tdot{display:none;width:8px;height:8px;border-radius:50%;background:var(--tab);margin-left:7px;vertical-align:1px}
+.tabs .tdot.on{display:inline-block}
+@media (max-width:430px){.tabs{gap:0;overflow-x:visible}.tabs button{flex:1 1 auto;padding:0 5px;font-size:clamp(12.5px,3.6vw,15px)}.tabs .tdot{margin-left:4px}}
+
+main{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;
+  padding:22px max(22px,env(safe-area-inset-right)) calc(36px + env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left))}
+html.lp-min main{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+main>section{max-width:680px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
+section[hidden]{display:none!important}
+
+/* shared buttons: one primary per screen, 64 px tall. Primary is orange (--btn, white text 4.85:1); ghost is white with an edge */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:64px;border-radius:18px;font-size:18px;font-weight:700;
+  text-decoration:none;text-align:center;transition:transform .08s,filter .08s;background:var(--btn);color:var(--btnfg)}
+.btn:active{transform:scale(.985);filter:brightness(.92)}
+.btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.btn.paper,.btn.kit,.btn.live{background:var(--btn);color:var(--btnfg)}
+.btn.ghost{background:var(--panel);color:var(--fg);box-shadow:inset 0 0 0 2px var(--line2)}
+.btn.ghost[aria-pressed=true]{background:var(--ok-bg);box-shadow:inset 0 0 0 2px var(--ok);color:var(--ok)}
+.btn.ghost[aria-pressed=true] svg{fill:var(--ok);stroke:var(--ok)}
+.lnk{display:inline-flex;align-items:center;min-height:48px;padding:0 4px;font-size:16px;font-weight:700;text-decoration:underline;text-underline-offset:3px;color:var(--btn-2)}
+.note{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:16px;line-height:1.45;color:var(--soft)}
+.note i{flex:none;width:9px;height:9px;border-radius:50%;margin-top:7px;background:var(--btn)}
+.note .lnk{min-height:auto;padding:0}
+.note-row{display:flex;flex-direction:column;gap:2px}
+
+/* Follow: the slide idea as one calm white card */
+.card{flex:1 0 auto;min-height:min(54dvh,460px);background:var(--panel);color:var(--fg);border-radius:28px;padding:28px 24px 24px;border:1px solid var(--line);
+  display:flex;flex-direction:column;box-shadow:var(--shadow-l)}
+.card .lbl{font-size:14px;font-weight:600;color:var(--steel);margin-bottom:16px}
+.card h2{font:600 40px/1.05 var(--serif);letter-spacing:-.012em;overflow-wrap:break-word}
+.card .lead{margin-top:18px;font-size:20px;line-height:1.5;color:var(--text)}
+.card .ex{margin-top:auto;padding-top:18px;border-top:1.5px solid var(--line)}
+.card .lead+.ex{margin-top:auto}
+.card .gap{flex:1;min-height:24px}
+.card .ex small{display:block;font-size:14px;font-weight:600;color:var(--steel);margin-bottom:6px}
+.card .ex q{display:block;quotes:none;font:italic 500 21px/1.32 var(--serif);color:var(--fg)}
+#v-follow .btn{margin-top:16px}
+.ask{margin-top:16px;padding:20px;border-radius:22px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow-l)}
+.ask p{font-size:15px;color:var(--steel)}
+.ask h3{margin:8px 0 14px;font:600 24px/1.25 var(--serif);color:var(--fg)}
+.ask .btn{margin-top:0!important}
+.fin{margin-bottom:16px;padding:22px 20px;border-radius:22px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow-l)}
+.fin h2{font:600 30px/1.1 var(--serif)}
+.fin p{margin:8px 0 14px;color:var(--soft)}
+.fin .btn{margin-top:0!important}
+
+/* the waiting room (before Aran starts) */
+.join{flex:1;display:flex;flex-direction:column;padding-top:8px}
+.join .by{font-size:16px;color:var(--steel);margin-bottom:12px}
+.join h1{font:600 46px/1.02 var(--serif);letter-spacing:-.015em;overflow-wrap:break-word}
+.join .hi{margin-top:18px;font-size:19px;color:var(--text)}
+.legend{margin-top:auto;padding-top:28px;display:grid;gap:12px}
+.legend div{display:grid;gap:12px;padding:18px;border-radius:20px;background:var(--panel);border:1px solid var(--line)}
+.legend p{display:flex;align-items:center;gap:12px;font-size:16px;line-height:1.3;color:var(--text)}
+.sw{flex:none;width:28px;height:28px;border-radius:8px}
+.sw.n{background:var(--panel);box-shadow:inset 0 0 0 2px var(--fg)}
+.sw.o{background:var(--btn)}
+.sw.g{background:var(--ok)}
+.fine{margin-top:14px;font-size:16px;text-align:center;color:var(--steel)}
+.wait{flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:24px 8px}
+.wait h2{font:600 32px/1.1 var(--serif)}
+.wait p{margin:12px auto 0;max-width:30ch;color:var(--soft)}
+.wait .btn{max-width:280px;margin:24px auto 0}
+.sk i{display:block;border-radius:28px;background:var(--line);height:min(54dvh,460px);animation:pulse 1.4s ease-in-out infinite}
+.sk i+i{height:64px;border-radius:18px;margin-top:16px}
+@keyframes pulse{50%{opacity:.5}}
+
+/* Polls: every poll the room has reached, with its state in words */
+.vh{font:600 32px/1.1 var(--serif);letter-spacing:-.01em}
+.vsub{margin-top:8px;font-size:16px;color:var(--soft)}
+.plist{display:grid;gap:12px;margin-top:20px}
+.prow{background:var(--panel);color:var(--fg);border-radius:22px;padding:18px 18px 16px;border:1px solid var(--line);box-shadow:var(--shadow-l)}
+.prow.is-live{border-color:var(--btn);box-shadow:inset 0 0 0 1px var(--btn),var(--shadow-l)}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.tag{display:inline-flex;align-items:center;gap:7px;min-height:28px;padding:0 12px;border-radius:14px;font-size:14px;font-weight:700;white-space:nowrap}
+.tag.live{background:var(--btn);color:var(--btnfg)}
+.tag.live i{width:8px;height:8px;border-radius:50%;background:var(--white)}
+.tag.open{background:var(--fg);color:var(--white)}
+.tag.done{background:var(--ok);color:var(--white)}
+.tag.closed{background:var(--press);color:var(--fg);box-shadow:inset 0 0 0 1.5px var(--line2)}
+.pn{font-size:14px;font-weight:600;color:var(--steel);white-space:nowrap}
+.prow h3{font:600 22px/1.2 var(--serif);overflow-wrap:break-word}
+.prow .you{margin-top:10px;font-size:16px;color:var(--soft)}
+.prow .you b{color:var(--fg)}
+.prow .btn{margin-top:14px}
+.popts{display:grid;gap:8px;margin-top:14px}
+.popt{width:100%;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-radius:16px;
+  background:var(--panel);color:var(--fg);font-size:18px;font-weight:600;line-height:1.25;box-shadow:inset 0 0 0 2px var(--btn)}
+.popt:active{background:var(--press)}
+.popt[aria-checked=true]{background:var(--btn);color:var(--btnfg);box-shadow:none}
+.popt .ring{flex:none;width:24px;height:24px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--edge)}
+.popt[aria-checked=true] .ring{background:var(--white);box-shadow:inset 0 0 0 6px var(--btn),inset 0 0 0 12px var(--white)}
+.pbars{display:grid;gap:12px;margin-top:14px}
+.prh{margin-top:16px;font-size:16px;font-weight:700;color:var(--fg)}
+.pbar .l{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:16px;font-weight:600;margin-bottom:6px}
+.pbar .l span:first-child{min-width:0;overflow-wrap:break-word}
+.pbar .l b{flex:none;font:600 18px var(--serif)}
+.pbar .t{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.pbar .t i{display:block;height:100%;width:0;border-radius:6px;background:var(--steel);transition:width .8s var(--ease)}
+.pbar.me .t i{background:var(--btn)}
+.pbar .me-tag{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:9px;background:var(--fg);color:var(--white);font-size:13px;font-weight:700;vertical-align:2px}
+.prow .row2{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px}
+.prow .row2 .lnk{color:var(--btn-2)}
+.sync{margin-top:10px;font-size:15px;font-weight:600;color:var(--fg)}
+.empty{margin-top:20px;padding:22px;border-radius:22px;background:var(--panel);border:1px solid var(--line);color:var(--soft);font-size:17px}
+
+/* Kit: three numbered steps on the same light page. Orange for the buttons, green only for "copied" and "done" */
+.kh{font:600 34px/1.06 var(--serif);letter-spacing:-.01em}
+.ksub{margin-top:8px;font-size:16px;color:var(--soft)}
+.steps{list-style:none;margin:8px 0 0;padding:0}
+.step{margin-top:24px}
+.sh{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:700;margin-bottom:12px}
+.sh i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--fg);color:var(--white);display:grid;place-items:center;font-style:normal;font-size:15px}
+.nl{display:block;font-size:15px;font-weight:600;margin-bottom:8px;color:var(--text)}
+.name{display:block;width:100%;min-height:56px;padding:0 18px;border-radius:16px;border:0;background:var(--panel);color:var(--fg);
+  font-size:19px;font-weight:600;box-shadow:inset 0 0 0 2px var(--edge);-webkit-appearance:none;appearance:none;margin-bottom:10px}
+.name::placeholder{color:var(--mute-l);opacity:1}
+.name:focus{outline:none;box-shadow:inset 0 0 0 2px var(--btn),0 0 0 4px rgba(196,74,6,.25)}
+.kfine{margin-top:10px;font-size:16px;line-height:1.45;color:var(--soft)}
+.kfine .lnk{min-height:48px;padding:0}
+.prompt{border-radius:16px;background:var(--panel);border:1px solid var(--line);padding:14px 16px;font-size:16px;line-height:1.5;color:var(--text);margin-bottom:10px}
+.prompt span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.prompt.open span{display:block;-webkit-line-clamp:unset}
+.copied{display:flex;align-items:center;gap:14px;width:100%;min-height:64px;padding:8px 18px;border-radius:18px;background:var(--ok-bg);color:var(--ok);
+  box-shadow:inset 0 0 0 2px var(--ok)}
+.copied .ok{flex:none;width:34px;height:34px;border-radius:50%;background:var(--ok);display:grid;place-items:center}
+.copied .ok svg{width:18px;height:18px;stroke:var(--white);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.copied b{display:block;font-size:17px}
+.copied small{display:block;font-size:14px;color:var(--ok)}
+.copied.fail{box-shadow:inset 0 0 0 2px var(--btn)}
+.moves{display:grid;gap:10px}
+.move{width:100%;min-height:72px;display:flex;align-items:center;gap:14px;padding:12px 12px 12px 18px;border-radius:18px;color:var(--fg);background:var(--panel);
+  box-shadow:inset 0 0 0 1.5px var(--line2)}
+.move:active{background:var(--press)}
+.move .mt{flex:1;min-width:0}
+.move .mt b{display:block;font:600 20px/1.2 var(--serif)}
+.move .mt small{display:block;margin-top:2px;font-size:14px;color:var(--steel)}
+.move .cp{flex:none;min-height:48px;min-width:84px;padding:0 14px;border-radius:24px;background:var(--btn);color:var(--btnfg);display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:700}
+.move .cp svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.move.done{background:var(--ok-bg);color:var(--ok);box-shadow:inset 0 0 0 2px var(--ok)}
+.move.done .mt small{color:var(--ok)}
+.move.done .cp{background:var(--ok);color:var(--white)}
+.more{margin-top:12px;font-size:16px;color:var(--soft)}
+.kept{margin-top:30px;padding-top:20px;border-top:1.5px solid var(--line)}
+.kept h3{font-size:17px;font-weight:700;margin-bottom:10px}
+.kept article{padding:14px 16px;border-radius:16px;background:var(--panel);border:1px solid var(--line);margin-bottom:8px}
+.kept article b{display:block;font:600 19px/1.25 var(--serif)}
+.kept article p{margin-top:4px;font-size:16px;color:var(--soft)}
+
+.kcard{margin-top:30px;padding:20px;border-radius:22px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow-l)}
+.kcard h3{font:600 24px/1.2 var(--serif);margin-bottom:8px}
+.kcard p{font-size:16px;color:var(--soft)}
+.kcard .btn{margin-top:14px}
+.kcard .q2{margin:10px 0 4px;font:600 21px/1.35 var(--serif);color:var(--fg)}
+.ifl{display:block;font-size:16px;margin:4px 0 8px;color:var(--text)}
+.ift{display:block;width:100%;min-height:96px;padding:14px 16px;border-radius:16px;border:0;background:var(--panel);color:var(--fg);font:600 18px/1.4 var(--sans);
+  box-shadow:inset 0 0 0 2px var(--edge);resize:vertical;-webkit-appearance:none;appearance:none}
+.ift::placeholder{color:var(--mute-l);opacity:1}
+.ift:focus{outline:none;box-shadow:inset 0 0 0 2px var(--btn),0 0 0 4px rgba(196,74,6,.25)}
+.said{display:grid;gap:10px;margin-top:6px}
+.said article{padding:14px 16px;border-radius:16px;background:var(--deep);border:1px solid var(--line)}
+.said b{display:block;font-size:16px;margin-bottom:4px}
+.said p{font-size:16px;color:var(--soft)}
+.btn.ghost.k2{color:var(--fg);box-shadow:inset 0 0 0 2px var(--line2);margin-top:10px}
+/* Copy buttons keep their place and their focus: only the words inside change to Copied (success, so green) */
+.btn.is-copied{background:var(--ok);color:var(--white)}
+.btn.is-failed{box-shadow:inset 0 0 0 3px var(--fg)}
+/* Notes: one white card per slide the room has seen (title, slide number, the takeaways, a box for your own notes) */
+.lede{margin:6px 0 14px;font-size:16px;color:var(--soft)}
+.nc{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 12px;box-shadow:var(--shadow-l)}
+.nc h3{font:600 20px/1.25 var(--serif);margin:0 0 2px;overflow-wrap:break-word}
+.nc .q{margin:0 0 8px;font-size:15px;color:var(--steel)}
+.nc ul{margin:0 0 12px;padding-left:20px}
+.nc li{margin:4px 0;color:var(--text)}
+.nc .pr{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--deep);border-radius:12px;padding:10px 12px;margin:6px 0 12px;font-size:15px;color:var(--text)}
+.nc .btn{min-height:52px;font-size:16px}
+.nc .lnk{padding:0}
+.nc .al{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.nc .al a{display:inline-flex;align-items:center;min-height:48px;padding:0 16px;border-radius:24px;background:var(--panel);color:var(--btn-2);font-size:15px;font-weight:700;text-decoration:none;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.nc .al a.main{background:var(--fg);color:#fff;box-shadow:none}
+.nc .al a:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.nhd{font:600 24px/1.2 var(--serif);margin:18px 0 4px}
+.nhd:first-child{margin-top:6px}
+.watch{display:inline-flex;margin:0 0 12px}
+.empty{margin:0 0 14px;padding:16px;border:1.5px dashed var(--line2);border-radius:16px;text-align:center;color:var(--soft);background:transparent}
+textarea.nt{display:block;width:100%;min-height:84px;padding:12px 14px;border-radius:14px;border:0;background:var(--panel);color:var(--fg);font:500 17px/1.4 var(--sans);
+  box-shadow:inset 0 0 0 2px var(--edge);resize:vertical;-webkit-appearance:none;appearance:none}
+textarea.nt::placeholder{color:var(--mute-l);opacity:1}
+textarea.nt:focus{outline:none;box-shadow:inset 0 0 0 2px var(--btn),0 0 0 4px rgba(196,74,6,.25)}
+.btn.alt{background:var(--panel);color:var(--fg);box-shadow:inset 0 0 0 2px var(--line2);margin-top:4px}
+.kept .nbody{white-space:pre-wrap;overflow-wrap:break-word}
+.links{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:22px}
+.links .lnk{color:var(--btn-2)}
+.calm{margin-top:20px;padding:22px;border-radius:22px;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow-l)}
+.calm h3{font:600 24px/1.2 var(--serif)}
+.calm p{margin-top:6px;font-size:16px;color:var(--soft)}
+.sr{position:fixed;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;left:0;top:0}
+.prh{margin-top:14px;font-size:16px;font-weight:700}
+@media (max-width:340px){.where b{font-size:18px}.card h2{font-size:34px}.join h1{font-size:38px}}
+
+/* reconnecting, and Aran asking for eyes up */
+#chip{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:9;display:none;align-items:center;gap:10px;
+  padding:12px 18px;border-radius:24px;background:var(--fg);color:var(--white);font-size:15px;font-weight:700;box-shadow:0 8px 24px rgba(15,26,46,.3);
+  white-space:nowrap;max-width:calc(100vw - 24px);overflow:hidden;text-overflow:ellipsis}
+#chip::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;background:var(--amber)}
+#chip.on{display:flex}
+html.lp-min #chip{bottom:calc(92px + env(safe-area-inset-bottom))}
+#eyes{position:fixed;inset:0;z-index:2147483000;background:var(--deep);color:var(--fg);display:none;align-items:center;justify-content:center;text-align:center;padding:30px}
+#eyes.on{display:flex}
+#eyes h2{font:600 40px/1.1 var(--serif)}
+#eyes p{color:var(--soft);max-width:26ch;margin:12px auto 0;font-size:18px}
+
+@media (min-width:700px){.card h2{font-size:48px}.join h1{font-size:60px}.card .lead{font-size:22px}}
+@media (max-height:500px){.top{display:flex;align-items:center;gap:16px;padding-top:calc(4px + env(safe-area-inset-top))}.top .row{flex:none;max-width:none;margin:0}.where span{display:none}.where b{font-size:18px}.tabs{margin:0;flex:1;min-width:0}main{padding-top:14px}.card{min-height:0}.card h2{font-size:32px}.join h1{font-size:34px}.sk i{height:200px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.01ms!important}}
+</style>
+<script src="/_deck/poll.js"></script>
+</head>
+<body data-view="follow">
+<header class="top" id="pill"><div class="row"><i class="dot off" id="dot"></i><div class="where"><b id="where">Notes and resources</b><span id="sub">Connecting</span></div></div>
+  <nav class="tabs" role="tablist" id="tabs" aria-label="Notes and resources">
+    <button type="button" role="tab" data-go="follow" aria-selected="true">Notes</button>
+    <button type="button" role="tab" data-go="polls" aria-selected="false">Polls<i class="tdot" id="tdot"></i></button>
+    <button type="button" role="tab" data-go="prompts" aria-selected="false">Prompts</button>
+    <button type="button" role="tab" data-go="apps" aria-selected="false">AI apps</button>
+    <button type="button" role="tab" data-go="kit" aria-selected="false">Build yours</button>
+  </nav></header>
+<main id="main">
+  <section id="v-follow" aria-busy="true"><div class="sk"><i></i><i></i></div></section>
+  <section id="v-polls" hidden></section>
+  <section id="v-prompts" hidden></section>
+  <section id="v-apps" hidden></section>
+  <section id="v-kit" hidden></section>
+</main>
+<div id="chip" role="status">Reconnecting to the room</div>
+<div id="said" class="sr" aria-live="polite"></div>
+<div id="eyes" role="status"><div><h2>Eyes up</h2><p>Aran is talking. Your phone will wait for you.</p></div></div>
+<script>
+(function(){
+"use strict";
+const D=/*__DATA__*/null;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const has=(o,k)=>Object.prototype.hasOwnProperty.call(o,k);
+const T0=performance.now();
+const lsGet=k=>{ try{ return localStorage.getItem(k); }catch(_){ return null; } };
+const lsSet=(k,v)=>{ try{ localStorage.setItem(k,v); return true; }catch(_){ return false; } };
+
+/* the live poll takeover lives in /_deck/poll.js; if it did not load, a stub keeps this page working */
+const LP=window.LivePoll||{feed(){},tallies(){},net(){},config(){},vote(){return false;},flush(){},loadTally(){},loadMine(){},mine:()=>({}),pending:()=>({}),sending:()=>null,
+  tally:()=>null,live:()=>null,closedList:()=>[],isClosed:()=>false,late:()=>"",question:()=>null,viewers:()=>0,offline:()=>false,show(){},showing:()=>false,minimized:()=>false,
+  open:()=>false,isRows:()=>false,answerText:(id,v)=>{ const q=QBY[id]; if(!q||v==null) return ""; return typeof v==="object"&&Array.isArray(q.rows)?q.rows.map(r=>r.label+": "+(q.options[v[r.key]]||"")).join(". "):(q.options[v]||""); }};
+
+const IDS=D.S, N=IDS.length, FIN_AT=IDS.indexOf("close");
+/* the question list can be edited live in admin, so Q and QBY are refilled in place */
+const Q=[], QBY={};
+function setQ(list){ Q.length=0; Object.keys(QBY).forEach(k=>{ delete QBY[k]; }); (list||[]).forEach(q=>{ if(q&&Array.isArray(q.options)){ Q.push(q); QBY[q.id]=q; } }); }
+setQ(D.Q);
+let curQv=typeof D.qv==="string"?D.qv:null, qBusy=false;
+
+/* ---------- local state: the phone is the first copy, the account is the second */
+let st={v:2,reached:[],slide:null,cn:{}};   /* cn: chapter number ("01") -> the attendee's own note on that card */
+let out={};   /* notes waiting to be sent; poll answers wait in poll.js */
+function persist(){ lsSet("pl:v2",JSON.stringify(st)); lsSet("pl:out",JSON.stringify(out)); }
+const oldAns=[];
+(function boot(){
+  try{ const j=JSON.parse(lsGet("pl:v2")||"null"); if(j&&j.v===2){ st.reached=Array.isArray(j.reached)?j.reached:[]; st.slide=typeof j.slide==="number"?j.slide:null; if(j.cn&&typeof j.cn==="object") Object.keys(j.cn).forEach(k=>{ if(typeof j.cn[k]==="string") st.cn[k]=j.cn[k]; }); } }catch(_){}
+  try{ const o=JSON.parse(lsGet("pl:out")||"{}")||{}; Object.keys(o).forEach(k=>{ const v=o[k]; if(v&&v.k==="note"&&typeof v.n==="string") out[k]=v; else if(v&&v.k==="ans") oldAns.push(v); }); }catch(_){ out={}; }
+})();
+
+let PL=null, slide=st.slide, eyes=false, view="follow", liveQ=null, closedL=[];
+let loadFail=false, ready=false, acct=false, firstName="", hiddenAt=0, rt=0;
+let prompts=[]; try{ const p=JSON.parse(lsGet("pl:prompts")||"[]"); if(Array.isArray(p)) prompts=p; }catch(_){}
+let CH=[]; try{ const c=JSON.parse(lsGet("pl:chapters")||"[]"); if(Array.isArray(c)) CH=c; }catch(_){}
+let aname=(lsGet("pl:aname")||"").slice(0,32);
+const rowChange={};   /* Change pressed on a poll in the Polls list */
+const locks={};
+const locked=(k,ms)=>{ const n=Date.now(); if(locks[k]&&n<locks[k]) return true; locks[k]=n+(ms||450); return false; };   /* swallow the second tap of a double tap */
+let ws=null, wsOk=false, wsAt=0, wsTry=0, offline=false, flushing=false, lastSig="", pollSig="";
+
+const shownOrder=()=>{ if(!PL||!PL.order) return Array.from({length:N},(_,i)=>i); const h=new Set(PL.hidden||[]); return PL.order.filter(i=>!h.has(i)); };
+const reachedSet=()=>{ const s=new Set(st.reached); if(slide!=null) s.add(slide); return s; };
+const qReached=q=>reachedSet().has(IDS.indexOf(q.slide));
+const slideLine=()=>{ const SO=shownOrder(), SP=slide==null?-1:SO.indexOf(slide); return SP<0?"":"Slide "+(SP+1)+" of "+SO.length; };
+/* the cards: what the room has seen so far, from the server (it holds back what Aran has not reached) */
+const seenCh=()=>CH.filter(c=>c&&c.title&&c.title!=="Coming up");
+const bullets=c=>(c.reqs||[]).filter(r=>r&&r.text&&r.text!=="Not shown yet");
+
+const api=async(path,opt)=>{
+  const r=await fetch(path,Object.assign({cache:"no-store",credentials:"same-origin"},opt||{}));
+  if(r.status===401){ location.href="/app"; throw new Error("login"); }
+  return r;
+};
+const getJson=async p=>{ const r=await api(p); if(!r.ok) throw new Error(String(r.status)); return r.json(); };
+
+/* a note on a card: kept on the phone first, then sent under the key "ch-<number>" (the server keeps notes per key, 600 characters) */
+const noteKey=n=>"ch-"+n;
+function queueNote(n,text){ const t=String(text||"").slice(0,600); if(t.trim()) st.cn[n]=t; else delete st.cn[n];
+  out["note:"+n]={k:"note",q:noteKey(n),n,text:t.trim()?t:""}; persist(); clearTimeout(queueNote.t); queueNote.t=setTimeout(flush,900); }
+async function flush(){
+  LP.flush();
+  if(flushing||!Object.keys(out).length) return;
+  flushing=true;
+  try{
+    for(const key of Object.keys(out)){
+      const o=out[key]; if(!o) continue;
+      let r; try{ r=await fetch("/api/notes",{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({q:o.q,text:o.text,shared:false}),cache:"no-store",credentials:"same-origin"}); }catch(_){ break; }
+      if(r.status===429) break;
+      if(r.ok||r.status===400||r.status===413){ if(out[key]===o) delete out[key]; if(r.ok) acct=true; }
+    }
+  }finally{ flushing=false; persist(); chip(); }
+}
+setInterval(()=>{ if(Object.keys(out).length&&navigator.onLine!==false) flush(); },4000);
+
+/* ---------- data */
+async function loadThread(){
+  try{ const t=await getJson("/api/poll/thread"); st.reached=Object.keys(t.slides).map(Number); persist(); paint(); }catch(_){}
+}
+async function loadAccount(){
+  let me=null, status=0;
+  try{ const r=await fetch("/api/me",{cache:"no-store",credentials:"same-origin"}); status=r.status; if(r.ok) me=await r.json(); }catch(_){}
+  if(me){
+    acct=true; LP.config({audience:true});
+    firstName=String(me.name||"").trim().split(/\s+/)[0]||"";
+    { const mn=me.notes||{}, back={}; Object.keys(mn).forEach(k=>{ if(k.indexOf("ch-")===0&&mn[k]&&typeof mn[k].text==="string") back[k.slice(3)]=mn[k].text; });
+      Object.keys(out).forEach(k=>{ if(out[k].k==="note"){ if(out[k].text) back[out[k].n]=out[k].text; else delete back[out[k].n]; } });
+      st.cn=back; lastSig=""; }
+    persist(); paint();
+  }else if(status===403) LP.config({audience:false});
+  LP.loadMine();
+}
+async function loadQuestions(){
+  if(qBusy) return; qBusy=true;
+  try{ const j=await getJson("/api/poll/questions"); setQ(j.questions); curQv=j.qv; LP.config({questions:Q}); await loadThread(); lastSig=""; paint(); }catch(_){}
+  qBusy=false;
+}
+let contentSeq=0;   /* a slow answer to an older ask must not replace a newer one (a fast walk through the deck sends several asks) */
+async function loadContent(){
+  const mine=++contentSeq;
+  try{ const j=await getJson("/api/content"); if(mine!==contentSeq) return; prompts=(j.prompts||[]).filter(p=>p&&p.text); CH=Array.isArray(j.chapters)?j.chapters:CH;
+    lsSet("pl:prompts",JSON.stringify(prompts)); lsSet("pl:chapters",JSON.stringify(CH));
+    lastSig=""; if(view==="follow") paint(); else if(view==="prompts") renderPrompts(); else if(view==="kit"){ renderNotesList(); } }catch(_){}
+}
+function take(s){
+  if(!s||typeof s.slide==="undefined") return;
+  const planWas=JSON.stringify(PL); if(s.plan) PL=s.plan; const planMoved=planWas!=="null"&&planWas!==JSON.stringify(PL);   /* Aran hid or showed a slide: the chapter cards, prompts and kit follow without a reload */
+  loadFail=false; const prev=slide; slide=s.slide; eyes=!!s.eyesUp; st.slide=slide;
+  liveQ=s.liveQ||null; closedL=Array.isArray(s.closed)?s.closed.slice():[];
+  LP.feed(s);
+  if(typeof s.qv==="string"){ if(curQv===null){ curQv=s.qv; if(s.qv!=="0") loadQuestions(); } else if(s.qv!==curQv) loadQuestions(); }   // the inline list is the shipped one ("0"); anything else is fetched
+  if(slide!==prev||!ready||planMoved){ loadThread(); loadContent(); }
+  ready=true; paint();
+}
+
+/* ---------- copy: the clipboard write starts inside the tap (iOS needs that), with the old execCommand as the fallback */
+function fallbackCopy(text){
+  let ok=false;
+  try{ const t=document.createElement("textarea"); t.value=text; t.setAttribute("readonly",""); t.style.cssText="position:fixed;top:0;left:0;opacity:0;font-size:16px";
+    document.body.appendChild(t); t.select(); t.setSelectionRange(0,text.length); ok=document.execCommand("copy"); t.remove(); }catch(_){}
+  return ok;
+}
+function copyText(text,done){
+  if(navigator.clipboard&&window.isSecureContext){
+    let p; try{ p=navigator.clipboard.writeText(text); }catch(_){ done(fallbackCopy(text)); return; }
+    p.then(()=>done(true),()=>done(fallbackCopy(text)));
+  }else done(fallbackCopy(text));
+}
+const copied={};   /* key -> "ok" | "fail", for about two seconds */
+const sayIt=t=>{ const el=$("#said"); el.textContent=""; setTimeout(()=>{ el.textContent=t; },30); };
+function copyLabel(key,label){ const c=copied[key]; return c==="ok"?okSvg+"Copied":c==="fail"?"Copy did not work. Press and hold the text to copy it.":cpSvg+label; }
+function paintCopy(key){   /* only the words inside the button change, so focus stays where it was */
+  document.querySelectorAll('[data-copy="'+key+'"]').forEach(b=>{
+    const c=copied[key];
+    if(b.classList.contains("move")){ b.classList.toggle("done",c==="ok"); const cp=b.querySelector(".cp"), sm=b.querySelector(".mt small");
+      if(cp) cp.innerHTML=c==="ok"?okSvg+"Copied":cpSvg+"Copy"; if(sm) sm.textContent=c==="ok"?"Copied. Paste it into your AI app.":c==="fail"?"Copy did not work here. Try again.":(b.dataset.first||""); }
+    else{ b.classList.toggle("is-copied",c==="ok"); b.classList.toggle("is-failed",c==="fail"); b.innerHTML=copyLabel(key,b.dataset.label||"Copy"); }
+  });
+  if(key==="starter"){ const sp=$("#sp"); if(sp) sp.classList.toggle("open",copied.starter==="fail"); }
+}
+function markCopied(key,ok){ copied[key]=ok?"ok":"fail"; paintCopy(key); sayIt(ok?"Copied":"Copy did not work. Press and hold the text to copy it.");
+  clearTimeout(markCopied[key]); markCopied[key]=setTimeout(()=>{ delete copied[key]; paintCopy(key); },ok?2000:4000); }
+
+/* ---------- names and words */
+const cleanName=raw=>{ let n=String(raw==null?"":raw); try{ n=n.normalize("NFC").replace(/[^\p{L}\p{N} .'\-]/gu,""); }catch(_){ n=n.replace(/[^A-Za-z0-9 .'\-]/g,""); } return n.replace(/\s+/g," ").trim().slice(0,32); };
+const asstName=()=>cleanName(aname)||"My Assistant";
+const starter=()=>String(D.SP||"").split("NAMEMARK").join(asstName());
+const exampleOf=c=>String(c.example||"").replace(/^Example:\s*/i,"");
+const moveName=p=>String(p.title||"").replace(/^Move\s*\d+\s*,\s*/i,"")||p.title;
+const TWO="What have we missed?\nWhat assumptions have we made?";
+const starSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/></svg>';
+const dlSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14"/></svg>';
+const cpSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg>';
+const okSvg='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+/* ---------- the header: what this page is, and the room's state in words */
+const TABS=["follow","polls","prompts","apps","kit"];
+function paintPill(){
+  const off=offline||navigator.onLine===false;
+  let sub, dotOff=false;
+  if(slide==null){ sub=loadFail?"No connection":"Aran starts soon"; dotOff=true; }
+  else sub="Following Aran"+(slideLine()?", "+slideLine().toLowerCase():"");
+  if(off){ sub="Reconnecting to the room"; dotOff=true; }
+  $("#where").textContent="Notes and resources"; $("#sub").textContent=sub; $("#dot").classList.toggle("off",dotOff);
+  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.go===view)));
+  const td=$("#tdot"); if(td) td.classList.toggle("on",!!(liveQ&&!LP.isClosed(liveQ)));
+  document.title="Notes and resources";
+  const tc=document.querySelector('meta[name="theme-color"]'); if(tc) tc.setAttribute("content","#15233b");
+}
+
+/* ---------- Notes: one card per slide the room has seen, with a box for your own notes */
+const watchLink=`<a class="lnk watch" href="/watch" target="_blank" rel="noopener">Watch the slides live &#8599;</a>`;
+function renderFollow(){
+  const el=$("#v-follow"); el.removeAttribute("aria-busy");
+  if(slide==null&&loadFail&&!seenCh().length){ el.innerHTML=`<div class="wait"><h2>No connection</h2><p>Check your signal, then try again.</p><button class="btn paper" type="button" data-retry>Try again</button></div>`; return; }
+  if(slide==null&&!ready&&!seenCh().length){ el.innerHTML=`<div class="sk"><i></i><i></i></div>`; return; }
+  const act=document.activeElement, keep=act&&act.classList&&act.classList.contains("nt")?{n:act.dataset.n,a:act.selectionStart,b:act.selectionEnd}:null;
+  const seen=seenCh();
+  let h=`<h2 class="nhd">Your takeaways</h2><p class="lede">What has been shown so far, in the order you saw it. Type your own notes under each part. They stay on this phone, are kept with your account, and go into your kit file.</p>${watchLink}`;
+  if(FIN_AT>=0&&slide!=null&&slide>=FIN_AT) h+=`<div class="fin"><h2>Thank you for joining</h2><p>Build yours has the file, the starter prompt and every move from today.</p><button class="btn kit" type="button" data-go="kit">Open Build yours</button></div>`;
+  if(!seen.length) h+=`<div class="empty">Nothing shown yet. Takeaways appear here as the talk moves along.${slide==null&&firstName?` You are in, ${esc(firstName)}. Keep this page open.`:slide==null?" You are in. Keep this page open.":""}</div>`;
+  h+=seen.map(c=>{
+    const items=bullets(c), note=st.cn[c.n]||"";
+    return `<article class="nc" data-card="${esc(c.n)}"><h3>${esc(c.title)}</h3>${c.q?`<p class="q">${esc(c.q)}</p>`:c.line?`<p class="q">${esc(c.line)}</p>`:""}`+
+      (items.length?`<ul>${items.map(r=>`<li>${esc(r.text)}</li>`).join("")}</ul>`:"")+
+      `<textarea class="nt" data-n="${esc(c.n)}" maxlength="600" rows="3" placeholder="Your notes" aria-label="Your notes on ${esc(c.title)}">${esc(note)}</textarea></article>`; }).join("");
+  if(seen.length) h+=`<p>${copyBtn("notes","Copy all my notes","btn alt")}</p>`;
+  el.innerHTML=h;
+  if(keep){ const t=el.querySelector('textarea[data-n="'+keep.n+'"]'); if(t){ t.focus({preventScroll:true}); try{ t.setSelectionRange(keep.a,keep.b); }catch(_){} } }
+}
+function copyBtn(key,label,cls){
+  const c=copied[key];
+  return `<button class="${cls}${c==="ok"?" is-copied":c==="fail"?" is-failed":""}" type="button" data-copy="${key}" data-label="${esc(label)}">${copyLabel(key,label)}</button>`;
+}
+const notesText=()=>seenCh().map(c=>c.title+(c.q?" ("+c.q+")":"")+"\n"+bullets(c).map(r=>"* "+r.text).join("\n")+((st.cn[c.n]||"").trim()?"\nMy notes: "+st.cn[c.n].trim():"")).join("\n\n")||"No notes yet.";
+
+/* ---------- Prompts: the ones from the talk (as Aran reaches them), then starters, each one tap to copy */
+const STARTERS=(D.ST||[]).map(a=>[a.title,a.text]);
+const promptCard=(key,title,text)=>`<article class="nc"><h3>${esc(title)}</h3><div class="pr">${esc(text)}</div>${copyBtn(key,"Copy prompt","btn paper")}</article>`;
+function renderPrompts(){
+  let h=`<h2 class="nhd">Prompts to try</h2><p class="lede">Tap Copy, open any AI app, paste, and see what happens. Replace the words in [brackets] with your own situation. Do not paste anything confidential.</p>`;
+  if(prompts.length) h+=`<h2 class="nhd">From the talk</h2>`+prompts.map(p=>promptCard("mv:"+p.id,p.title,p.text)).join("");
+  h+=`<h2 class="nhd">Starter prompts</h2>`+STARTERS.map((x,i)=>promptCard("st:"+i,x[0],x[1])).join("");
+  $("#v-prompts").innerHTML=h;
+}
+
+/* ---------- AI apps: official sites, and official store pages where we are sure of them */
+const APPS=(D.APPS||[]).map(a=>[a.name,a.by,a.site,a.ios,a.android]);
+/* a link is drawn only when it is a web address (http or https); anything else (javascript:, data:, empty) gets no link */
+const webOnly=u=>/^https?:\/\//i.test(String(u||"").trim());
+function renderApps(){
+  $("#v-apps").innerHTML=`<h2 class="nhd">Get started with an AI app</h2><p class="lede">Any of these will run the prompts. Free tiers exist for all of them. Use the one your organization allows.</p>`+
+    APPS.map(([name,by,site,ios,and])=>`<article class="nc app"><h3>${esc(name)}</h3><p class="q">${esc(by)}</p><div class="al">${webOnly(site)?`<a class="main" href="${esc(site)}" target="_blank" rel="noopener noreferrer">Open on the web</a>`:""}${webOnly(ios)?`<a href="${esc(ios)}" target="_blank" rel="noopener noreferrer">iPhone App Store</a>`:""}${webOnly(and)?`<a href="${esc(and)}" target="_blank" rel="noopener noreferrer">Google Play</a>`:""}</div></article>`).join("")+
+    `<p class="kfine">Links go to each maker's own site or store page. Store pages differ by country and phone.</p>`;
+}
+
+/* ---------- Polls */
+const ansOf=(q,v)=>LP.answerText(q.id,v);
+function pollList(){
+  const R=reachedSet(), cl=new Set(LP.closedList());
+  const mine=LP.mine();
+  return Q.filter(q=>!q.part&&(q.id===liveQ||cl.has(q.id)||(q.manual?has(mine,q.id):R.has(IDS.indexOf(q.slide)))));
+}
+function barsHtml(q){
+  const t=LP.tally(q.id), m=LP.mine()[q.id];
+  const one=(counts,tot,pick)=>`<div class="pbars">`+q.options.map((o,i)=>{ const n=counts?(counts[i]||0):0, v=tot?Math.round(n/tot*100):0;
+    return `<div class="pbar${i===pick?" me":""}"><div class="l"><span>${esc(o)}${i===pick?'<i class="me-tag">you</i>':""}</span><b>${v}%</b></div><div class="t"><i style="width:${v}%"></i></div></div>`; }).join("")+`</div>`;
+  if(q.type!=="rows"||!Array.isArray(q.rows)) return one(t&&t.counts,t?t.total:0,m);
+  return q.rows.map((r,k)=>{ const tr=t&&t.rows?t.rows[k]:null; return `<p class="prh">${esc(r.label)}</p>`+one(tr&&tr.counts,tr?tr.total:0,m?m[r.key]:undefined); }).join("");
+}
+function renderPolls(){
+  const L=pollList(), mine=LP.mine(), pend=LP.pending(), n=L.filter(q=>has(mine,q.id)).length;
+  const sig=JSON.stringify([L.map(q=>q.id),mine,pend,liveQ,LP.closedList(),rowChange,L.map(q=>{ const t=LP.tally(q.id); return t?t.counts:null; }),LP.minimized(),LP.sending()]);
+  if(sig===pollSig) return; pollSig=sig;
+  let h=`<h2 class="vh">Your polls</h2><p class="vsub">${L.length?n+" of "+L.length+" answered. Open polls take answers until Aran closes them.":"Polls show up here as Aran reaches them."}</p>`;
+  if(!(liveQ&&!LP.isClosed(liveQ))) h+=`<div class="calm"><h3>Waiting for the next poll</h3><p>Your screen shows it when Aran opens one. Answer with one tap.</p></div>`;
+  if(!L.length){ $("#v-polls").innerHTML=h; return; }
+  h+=`<div class="plist">`;
+  for(const q of L){
+    const isLive=q.id===liveQ&&!LP.isClosed(q.id), isCl=LP.isClosed(q.id)&&!isLive, ans=has(mine,q.id), t=LP.tally(q.id);
+    const tag=isLive?`<span class="tag live"><i></i>Live now</span>`:isCl?`<span class="tag closed">Closed</span>`:ans?`<span class="tag done">Answered</span>`:`<span class="tag open">Open</span>`;
+    const cnt=t?(t.total+(t.total===1?" vote":" votes")):"";
+    h+=`<article class="prow${isLive?" is-live":""}" data-q="${esc(q.id)}"><div class="ph">${tag}<span class="pn">${esc(cnt)}</span></div><h3 id="ph-${esc(q.id)}">${esc(q.text)}</h3>`;
+    if(isLive){
+      if(ans) h+=`<p class="you">Your answer: <b>${esc(ansOf(q,mine[q.id]))}</b></p>`;
+      h+=`<button class="btn live" type="button" data-show>${ans?"See the room live":"Go to the current poll"}</button>`;
+    }else if(isCl){
+      const lt=LP.late(q.id);
+      h+=`<p class="you">${ans?`You answered: <b>${esc(ansOf(q,mine[q.id]))}</b>`:lt==="lost"?"Closed before your answer was sent. It was not counted.":"You did not answer this one."}</p>`+barsHtml(q);
+    }else if(q.type==="rows"){   /* readiness after Aran moved on: it opens on the poll screen, two rows and one Send */
+      if(ans) h+=`<p class="you">You answered: <b>${esc(ansOf(q,mine[q.id]))}</b></p>`+barsHtml(q);
+      h+=`<button class="btn live" type="button" data-open="${esc(q.id)}">${ans?"Change your answers":"Answer now"}</button>`;
+    }else if(!ans||rowChange[q.id]){
+      h+=`<div class="popts" role="radiogroup" aria-labelledby="ph-${esc(q.id)}">`+q.options.map((o,i)=>`<button class="popt" type="button" role="radio" data-a="${i}" aria-checked="${mine[q.id]===i}"${LP.sending()===q.id?" disabled":""}><span>${esc(o)}</span><i class="ring"></i></button>`).join("")+`</div>`;
+    }else{
+      h+=`<div class="row2"><p class="you">You answered: <b>${esc(ansOf(q,mine[q.id]))}</b></p><button class="lnk" type="button" data-change>Change</button></div>`;
+      if(has(pend,q.id)) h+=`<p class="sync">Vote saved, sending when connected.</p>`;
+      h+=barsHtml(q);
+    }
+    h+=`</article>`;
+  }
+  $("#v-polls").innerHTML=h+`</div>`;
+}
+/* the server shows bars only for slides the room reached (or the live poll), so nothing else is asked for */
+function loadPollTallies(){ const R=reachedSet(); pollList().forEach(q=>{ const ok=q.id===liveQ||(q.manual?LP.isClosed(q.id):R.has(IDS.indexOf(q.slide))); if(ok&&(has(LP.mine(),q.id)||LP.isClosed(q.id)||q.id===liveQ)) LP.loadTally(q.id); }); }
+
+/* ---------- Kit: a readable page first, then ONE file built on the phone */
+const FILE="Think-Possibility-Four-Moves-2026-10-22.md";
+let ifthen=(lsGet("pl:ifthen")||"").slice(0,240);
+let guide=null; try{ guide=JSON.parse(lsGet("pl:guide")||"null"); }catch(_){ guide=null; }
+let guideBusy="", guideT=0;
+async function loadGuide(){   /* the build guide, with the name in it; cached so the file works without signal */
+  const n=asstName(); if(guide&&guide.name===n) return; if(guideBusy===n) return; guideBusy=n;
+  try{ const r=await api("/guide.md?name="+encodeURIComponent(n)); if(r.ok){ const t=await r.text(); if(n===asstName()){ guide={name:n,text:t}; lsSet("pl:guide",JSON.stringify(guide)); } } }catch(_){}
+  guideBusy="";
+}
+const canShareFile=()=>{ try{ return !!(navigator.share&&navigator.canShare&&navigator.canShare({files:[new File(["x"],FILE,{type:"text/markdown"})]})); }catch(_){ return false; } };
+function saidList(){   /* the room's results, for polls this phone could see and answered, or that are closed */
+  const mine=LP.mine();
+  return pollList().filter(q=>has(mine,q.id)||LP.isClosed(q.id)).map(q=>{
+    const t=LP.tally(q.id), lines=[];
+    const pct=(counts,tot)=>q.options.map((o,i)=>{ const n=counts?(counts[i]||0):0; return o+": "+(tot?Math.round(n/tot*100):0)+"%"; });
+    if(q.type==="rows"&&Array.isArray(q.rows)) q.rows.forEach((r,k)=>{ const tr=t&&t.rows?t.rows[k]:null; lines.push(r.label+". "+pct(tr&&tr.counts,tr?tr.total:0).join(", ")); });
+    else lines.push(pct(t&&t.counts,t?t.total:0).join(", "));
+    return {q,t,lines,mine:has(mine,q.id)?ansOf(q,mine[q.id]):""};
+  });
+}
+function kitText(){
+  const N2=asstName(), L=[];
+  L.push("# "+(D.T||"Think Possibility")+": your take-home kit","","From Aran's talk on 22 October 2026. Everything here is plain text. Paste it into ChatGPT, Claude or Copilot.","");
+  L.push("## 1. Your starter prompt","","Paste this as your first message to "+N2+".","",starter(),"");
+  L.push("## 2. The moves","");
+  if(prompts.length) prompts.forEach(p=>{ L.push("### "+p.title,"",p.text,""); });
+  else L.push("The moves unlock as Aran reaches them. Open the kit again later to add them.","");
+  L.push("## 3. Two questions before you commit","","- What have we missed?","- What assumptions have we made?","");
+  L.push("## 4. What this room said","");
+  const S=saidList();
+  if(S.length) S.forEach(x=>{ L.push("### "+x.q.text,"",...x.lines.map(l=>"- "+l)); if(x.t) L.push("- Votes: "+x.t.total); if(x.mine) L.push("- Your answer: "+x.mine); L.push(""); });
+  else L.push("No poll results yet.","");
+  L.push("## 5. Your next step","",(ifthen.trim()||"When I next ___, I will ___."),"");
+  /* the attendee's own notes, each under the title of the card it was written on */
+  const NT=seenCh().filter(c=>(st.cn[c.n]||"").trim());
+  L.push("## 6. Your notes","");
+  if(NT.length) NT.forEach(c=>{ L.push("### "+c.title+(c.q?" ("+c.q+")":""),"",st.cn[c.n].trim(),""); });
+  else L.push("No notes yet. Type under any takeaway on the Notes tab and they will be here next time.","");
+  L.push("## 7. Build your own "+N2,"");
+  if(guide&&guide.name===N2&&guide.text) L.push(guide.text.replace(/^# .*\n+/,"").trimEnd());
+  else L.push("Download the full guide here: "+location.origin+guideHref());
+  return L.join("\n").replace(/[\u2013\u2014]/g,",")+"\n";
+}
+function downloadKit(){
+  const txt=kitText();
+  try{ const u=URL.createObjectURL(new Blob([txt],{type:"application/octet-stream"}));
+    const a=document.createElement("a"); a.href=u; a.download=FILE; a.rel="noopener"; a.style.display="none"; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),60000); sayIt("Your kit file is downloading"); }
+  catch(_){ location.href=guideHref(); }
+}
+function shareKit(){
+  try{ navigator.share({files:[new File([kitText()],FILE,{type:"text/markdown"})],title:FILE}).catch(()=>{}); }catch(_){ downloadKit(); }
+}
+function renderKit(){
+  const share=canShareFile();
+  let h=`<h2 class="kh">Build your own thinking partner</h2><p class="ksub">Works in ChatGPT, Claude or Copilot. Yours to keep after today.</p><ol class="steps">`;
+  h+=`<li class="step"><div class="sh"><i>1</i>Name your assistant, then save your kit</div>
+    <label class="nl" for="aname">Name your assistant</label>
+    <input class="name" id="aname" type="text" maxlength="32" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="For example, Scout" value="${esc(aname)}">
+    <button class="btn paper k" type="button" data-dl>${dlSvg}Download your kit</button>
+    ${share?`<button class="btn ghost k2" type="button" data-share>Save or share the file</button>`:""}
+    <p class="kfine">One file: the starter prompt, the moves, the room's results, your next step, your notes and the full build guide. Add it to a Project, a custom GPT or a Gem.</p>
+    <p class="kfine">Download did not start? <a class="lnk" id="dlg" href="${guideHref()}" download>Get the guide</a> or <a class="lnk" id="dls" href="${starterHref()}" download>the starter prompt</a>.</p></li>`;
+  h+=`<li class="step"><div class="sh"><i>2</i>Copy the starter prompt</div>
+    <div class="prompt" id="sp"><span id="spt">${esc(starter())}</span></div>${copyBtn("starter","Copy the starter prompt","btn paper k")}
+    <p class="kfine">Paste it as your first message.</p></li>`;
+  h+=`</ol>`;
+  h+=`<section class="kcard"><h3>Two questions before you commit</h3><p class="q2">What have we missed?<br>What assumptions have we made?</p>${copyBtn("two","Copy both questions","btn paper k")}</section>`;
+  h+=`<section class="kcard"><h3>Your next step</h3><label class="ifl" for="ifthen">Finish the sentence: When I next ___, I will ___.</label>
+    <textarea class="ift" id="ifthen" maxlength="240" placeholder="When I next see a bid waiver, I will ask what we have missed">${esc(ifthen)}</textarea>
+    <p class="kfine">Kept on this phone and written into your kit file.</p><button class="btn paper k" type="button" data-dl>${dlSvg}Download your kit</button></section>`;
+  h+=`<div id="saidl"></div><div id="notesl"></div>`;
+  $("#v-kit").innerHTML=h;
+  renderNotesList(); renderSaid(); loadGuide();
+  loadPollTallies();
+}
+function renderSaid(){
+  const el=$("#saidl"); if(!el) return;
+  const S=saidList();
+  el.innerHTML=S.length?`<section class="kcard"><h3>What this room said</h3><div class="said">`+S.map(x=>`<article><b>${esc(x.q.text)}</b>${x.lines.map(l=>`<p>${esc(l)}</p>`).join("")}${x.mine?`<p>Your answer: ${esc(x.mine)}</p>`:""}</article>`).join("")+`</div></section>`:"";
+}
+const guideHref=()=>"/guide.md?name="+encodeURIComponent(asstName());
+const starterHref=()=>"/starter.md?name="+encodeURIComponent(asstName());
+function kitName(){
+  const a=$("#dlg"); if(a) a.href=guideHref();
+  const s2=$("#dls"); if(s2) s2.href=starterHref();
+  const t=$("#spt"); if(t) t.textContent=starter();
+  clearTimeout(guideT); guideT=setTimeout(loadGuide,700);
+}
+function renderNotesList(){
+  const el=$("#notesl"); if(!el) return;
+  const cs=seenCh().filter(c=>(st.cn[c.n]||"").trim());
+  el.innerHTML=cs.length?`<div class="kept"><h3>Your notes</h3>`+cs.map(c=>`<article><b>${esc(c.title)}</b><p class="nbody">${esc(st.cn[c.n].trim())}</p></article>`).join("")+`</div>`:`<div class="kept"><h3>Your notes</h3><p class="more">No notes yet. Type under any takeaway on the Notes tab.</p></div>`;
+}
+
+/* ---------- paint */
+function sig(){
+  return JSON.stringify([slide,PL,liveQ,LP.closedList(),st.reached,CH.map(c=>c.n+c.title+(c.reqs||[]).length),prompts.map(p=>p.id),loadFail,ready,firstName,curQv,LP.minimized()]);
+}
+function paint(){
+  $("#eyes").classList.toggle("on",eyes);
+  paintPill();
+  if(view==="follow"){ const s=sig(); if(s!==lastSig){ lastSig=s; renderFollow(); } }
+  else if(view==="polls") renderPolls();
+  else if(view==="kit"){ renderNotesList(); renderSaid(); }
+}
+function go(name){
+  if(!TABS.includes(name)) name="follow";
+  view=name; document.body.setAttribute("data-view",name);
+  TABS.forEach(n=>{ $("#v-"+n).hidden=n!==name; });
+  lastSig=""; pollSig="";
+  if(name==="kit"){ renderKit(); loadContent(); }
+  if(name==="follow"||name==="prompts") loadContent();
+  if(name==="prompts") renderPrompts();
+  if(name==="apps") renderApps();
+  if(name==="polls"){ renderPolls(); loadThread(); loadPollTallies(); }
+  paint();
+  $("#main").scrollTop=0;
+  const t=document.querySelector('#tabs [aria-selected="true"]'); if(t&&t.scrollIntoView) try{ t.scrollIntoView({inline:"nearest",block:"nearest"}); }catch(_){}
+}
+
+/* ---------- taps */
+$("#pill").addEventListener("click",e=>{ const t=e.target.closest("button[data-go]"); if(t) go(t.dataset.go); });   /* the tabs */
+$("#main").addEventListener("click",e=>{
+  const t=e.target.closest("button,a"); if(!t) return;
+  if(t.dataset.retry!==undefined){ t.disabled=true; retry(); return; }
+  if(t.dataset.go){ go(t.dataset.go); return; }
+  if(t.hasAttribute("data-dl")){ downloadKit(); return; }
+  if(t.hasAttribute("data-share")){ shareKit(); return; }
+  if(t.hasAttribute("data-show")){ LP.show(); return; }
+  if(t.hasAttribute("data-open")){ LP.open(t.getAttribute("data-open")); return; }
+  if(t.dataset.copy){
+    const k=t.dataset.copy;
+    if(locked("copy:"+k,600)) return;
+    let text="";
+    if(k==="two") text=TWO;
+    else if(k==="starter") text=starter();
+    else if(k==="notes") text=notesText();
+    else if(k.indexOf("st:")===0){ const x=STARTERS[+k.slice(3)]; if(!x) return; text=x[1]; }
+    else if(k.indexOf("mv:")===0){ const p=prompts.find(x=>"mv:"+x.id===k); if(!p) return; text=p.text; }
+    else return;
+    copyText(text,ok=>markCopied(k,ok));
+    return;
+  }
+  const row=t.closest(".prow"), qid=row&&row.dataset.q;
+  if(qid&&t.hasAttribute("data-change")){ rowChange[qid]=true; renderPolls(); return; }
+  if(qid&&t.dataset.a!==undefined){ if(locked("a:"+qid,600)) return; const a=+t.dataset.a; if(LP.mine()[qid]===a){ delete rowChange[qid]; renderPolls(); return; } if(LP.vote(qid,a)) delete rowChange[qid]; renderPolls(); return; }
+});
+document.addEventListener("click",()=>{ if(LP.wake) LP.wake(); },{capture:true,once:true});   /* the screen wake lock is asked for inside the first tap */
+$("#main").addEventListener("input",e=>{
+  if(e.target.classList&&e.target.classList.contains("nt")){ queueNote(e.target.dataset.n,e.target.value); return; }
+  if(e.target.id==="ifthen"){ ifthen=e.target.value.slice(0,240); lsSet("pl:ifthen",ifthen); return; }
+  if(e.target.id!=="aname") return;
+  aname=e.target.value.slice(0,32); lsSet("pl:aname",aname); kitName();
+});
+$("#main").addEventListener("keydown",e=>{ if(e.target.id==="aname"&&e.key==="Enter"){ e.preventDefault(); e.target.blur(); } });
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){ hiddenAt=Date.now(); return; }
+  /* after a lock screen the socket is usually dead without saying so, so open a fresh one and catch up */
+  revive();   /* a phone that slept: treat the socket as dead, open a fresh one and take a full snapshot */
+  pollState(true); LP.refresh(); loadAccount(); loadThread(); flush();
+});
+
+/* ---------- live channel: the socket, with polling as the fallback; poll.js rides on it */
+function chip(){
+  const off=navigator.onLine===false, n=Object.keys(out).length+Object.keys(LP.pending()).length;
+  const c=$("#chip"); c.classList.toggle("on",!!(offline||off)); document.body.classList.toggle("off",!!(offline||off));
+  c.textContent=n?"Vote saved, sending when connected":"Reconnecting to the room";
+  paintPill();
+}
+function connect(){
+  clearTimeout(rt); if(ws&&ws.readyState<=1) return;
+  let w; try{ w=new WebSocket((location.protocol==="https:"?"wss://":"ws://")+location.host+"/api/ws"); }catch(e){ offline=true; chip(); return; }
+  ws=w;
+  w.onopen=()=>{ wsOk=true; wsAt=Date.now(); wsTry=0; LP.net(true); LP.refresh(); if(offline){ offline=false; chip(); loadAccount(); flush(); } };
+  w.onmessage=e=>{ wsAt=Date.now(); try{ const m=JSON.parse(e.data);
+    if(m&&m.t==="state") take(m.s);
+    else if(m&&m.t==="poll"&&m.tallies) LP.tallies(m.tallies); }catch(_){} };
+  const pi=setInterval(()=>{ try{ if(w.readyState===1) w.send("ping"); }catch(_){} },20000);
+  const gone=()=>{ clearInterval(pi); if(ws!==w) return; wsOk=false; ws=null; offline=true; LP.net(false); chip(); try{ w.close(); }catch(_){} clearTimeout(rt); rt=setTimeout(connect,Math.round(Math.min(30000,1000*Math.pow(2,wsTry++))*(0.5+Math.random()*0.5))); };
+  w.onclose=gone; w.onerror=gone;
+}
+function revive(){
+  clearTimeout(rt); const old=ws; ws=null; wsOk=false; wsTry=0;
+  if(old){ try{ old.close(); }catch(_){} }
+  connect();
+}
+function failLoad(){ if(slide!=null||loadFail) return; loadFail=true; lastSig=""; paint(); }
+async function pollState(force){
+  if(!force&&wsOk&&Date.now()-wsAt<30000) return;
+  try{ const r=await api("/api/state"); if(r.ok){ take(await r.json()); if(offline&&!wsOk&&!window.WebSocket){ offline=false; chip(); } } else failLoad(); }catch(_){ failLoad(); }
+}
+async function retry(){   /* the Try again button on the first-load error */
+  await pollState(true); loadAccount();
+  setTimeout(()=>{ lastSig=""; paint(); },600);
+}
+addEventListener("offline",()=>{ LP.net(false); chip(); });
+addEventListener("online",()=>{ chip(); flush(); loadAccount(); pollState(); });
+setTimeout(()=>setInterval(pollState,2000),3000);   /* the socket is not open within 3 s: ask for the state every 2 s until it is */
+
+/* ---------- start: first paint from what the phone already holds, then the network */
+LP.config({fed:true,host:"app",questions:Q,nav:go,onChange:()=>{ if(view==="polls") renderPolls(); else if(view==="follow") paint(); chip(); }});
+oldAns.forEach(o=>{ if(o&&typeof o.q==="string"&&Number.isInteger(o.a)) LP.vote(o.q,o.a); });
+if(oldAns.length) persist();
+(function start(){
+  if(slide!=null){ ready=true; paint(); }
+  Promise.all([getJson("/api/state").catch(()=>null),loadAccount()]).then(([s])=>{
+    if(s) take(s); else if(!ready){ ready=true; if(slide==null) loadFail=true; lastSig=""; paint(); }
+    window.__ready=Math.round(performance.now()-T0);
+    flush(); connect();
+  });
+})();
+/* test hooks: answers now live in poll.js (LivePoll.mine), st() folds them back in for the old checks */
+window.__app={kit:()=>kitText(),promptTitles:()=>prompts.map(p=>p.title),chapterLines:()=>CH.map(c=>c.title+":"+(c.reqs||[]).map(r=>r.text).join("|")),acct:()=>acct,answered:()=>Object.keys(LP.mine()).length,t0:T0,st:()=>Object.assign({},st,{answers:LP.mine(),slide}),out:()=>Object.assign({},out,{polls:LP.pending()}),
+  flush,tab:go,go,view:()=>view,take,starter,poll:LP,kit:kitText,file:FILE};
+})();
+</script>
+</body>
+</html>

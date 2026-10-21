@@ -1,0 +1,13 @@
+{
+  "id": "pulse",
+  "t": "pulse",
+  "dark": true,
+  "kick": "A QUESTION FOR THE ROOM",
+  "title": "How often does AI show up in your working week?",
+  "em": "your working week?",
+  "sub": "",
+  "ticks": [],
+  "notes": [
+    "Added slide. Right after the sign up. The first thing a phone shows after sign up is this question, so the bars are already filling. Read them in one sentence and move on. The close slide asks the same question about a month from now and shows how far the room moved. Skip it if time is short."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "pledge",
+  "t": "pledge",
+  "dark": true,
+  "kick": "A QUESTION FOR THE ROOM",
+  "title": "How often does AI show up in your working week?",
+  "em": "your working week?",
+  "legend": ["Today", "In one month"],
+  "sub": "Answer twice on your phone: Today, and where you expect to be in one month.",
+  "ticks": [],
+  "notes": [
+    "Ask the room the opening question one last time, in two rows on the phone: how often AI shows up in their week today, and where they expect to be in one month. Today is prefilled from their first answer and they can change it. Purple is today, teal is one month from now. Counts only, no names or emails. The close slide shows the same two rows side by side."
+  ]
+}

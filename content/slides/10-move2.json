@@ -1,0 +1,25 @@
+{
+  "id": "move2",
+  "builds": "click",
+  "t": "move",
+  "n": 2,
+  "kick": "MOVE 2 OF 4 · RED TEAM",
+  "title": "Invert it. Write the protest first.",
+  "em": "Write the protest first.",
+  "p": "P2",
+  "blocks": [
+    {
+      "h": "Why it works",
+      "t": "You already know how to defend your decision. You have never had a free, tireless opponent to attack it before it's public."
+    },
+    {
+      "h": "What you get",
+      "t": "The weak paragraph in your justification memo, found on a Tuesday instead of at a protest hearing."
+    }
+  ],
+  "hl": "Your turn: Run it on one of your own decisions. Which risk would you rather hear from the tool than from a vendor?",
+  "ticks": ["M2"],
+  "notes": [
+    "2:57. Six minutes: two live, three theirs, one with a neighbor. This is your red-team prompt, and it is the one that makes procurement people sit up. Run it live on the cooperative contract. Watch it write the protest letter. It will be uncomfortably good, because protest letters follow patterns and the tool has read thousands of them. The teaching point: inversion is the cheapest insurance you will ever buy. You already know how to argue for your decision. What you have never had is a tireless opponent who will attack it for free, at 4 p.m., before anything is public. The tool has no stake in whether you are right. That is the feature. Then the third sentence of the prompt, which is the one people forget: \"tell me what would make each point fail.\" That turns the attack into a checklist. Every protest point becomes a paragraph you strengthen in the justification memo. Three minutes for them. The neighbor question is on the slide: which risk would you rather have heard from the tool than from the vendor? Transition: \"Two challenger moves down. Now the fun one. Let's blow the options wide open.\""
+  ]
+}

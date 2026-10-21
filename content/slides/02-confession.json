@@ -1,0 +1,27 @@
+{
+  "id": "confession",
+  "builds": "click",
+  "t": "confess",
+  "kick": "THE CONFESSION",
+  "title": "Ask it for an answer and you get the most probable one. The average.",
+  "em": "The average.",
+  "curve": ["The average", "The edges"],
+  "cols": [
+    {
+      "h": "How most people use it",
+      "items": ["Write it faster.", "Summarize it.", "Answer a question I already knew how to ask."]
+    },
+    {
+      "h": "CHANGE YOUR APPROACH",
+      "items": [
+        "Challenge my assumptions.",
+        "Find my blind spots.",
+        "Give me options I would never have generated alone."
+      ]
+    }
+  ],
+  "ticks": ["C1", "C2", "C3"],
+  "notes": [
+    "2:41. Three minutes. Say the true thing about these tools without turning it into a lecture: under the hood, a language model predicts the most likely next word. Ask it a plain question and you get the most probable answer, which is another way of saying the average answer. That is fine for a summary. It is terrible for a decision, because the average is exactly where everyone else already is. So the trick of this whole session is one sentence: stop asking for the answer, start asking for the range. The same tool that gives you the average when you ask \"what should I do\" will give you the edges when you ask \"what am I not seeing.\" Left card is where most of the room lives, and it is a fine place to start. Right card is where we are going. Nobody has to leave the left card behind. Writing faster is still useful. It is just the least interesting thing the tool can do. Transition: \"I have a picture for this. Bear with me, I'm Gen X.\""
+  ]
+}

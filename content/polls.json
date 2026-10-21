@@ -1,0 +1,59 @@
+[
+  {
+    "id": "cover",
+    "slide": "where",
+    "n": "1",
+    "liveOn": ["pulse"],
+    "text": "How often does AI show up in your working week?",
+    "options": [
+      "Not at all",
+      "A few times a week",
+      "Once or twice a day",
+      "Several times a day",
+      "I am one with my AI"
+    ],
+    "follow": null
+  },
+  {
+    "id": "movecheck",
+    "slide": "movecheck",
+    "n": "2",
+    "text": "Which move will you try first?",
+    "options": ["Challenge", "Invert", "Multiply", "Rehearse"],
+    "follow": null
+  },
+  {
+    "id": "readiness",
+    "slide": "pledge",
+    "n": "3",
+    "type": "rows",
+    "text": "How often does AI show up in your working week?",
+    "rows": [
+      {"key": "today", "label": "Today", "q": "cover"},
+      {"key": "month", "label": "In one month", "q": "close"}
+    ],
+    "options": [
+      "Not at all",
+      "A few times a week",
+      "Once or twice a day",
+      "Several times a day",
+      "I am one with my AI"
+    ],
+    "follow": null
+  },
+  {
+    "id": "close",
+    "slide": "close",
+    "n": "3",
+    "part": "readiness",
+    "text": "A month from now, how often will AI show up in your week?",
+    "options": [
+      "Not at all",
+      "A few times a week",
+      "Once or twice a day",
+      "Several times a day",
+      "I am one with my AI"
+    ],
+    "follow": null
+  }
+]

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f3f5f9">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:,">
+<title>Admin</title>
+<link rel="stylesheet" href="/brand.css">
+<link rel="stylesheet" href="/ui.css">
+<style>
+/* Admin: light, three tabs (Overview, Audience, Activity), one table of links. Tokens come from /ui.css. */
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--deep);color:var(--fg);font:var(--t-md)/var(--lh) var(--sans);min-height:100vh;-webkit-text-size-adjust:100%}
+button,a.btn,input{font:inherit;color:inherit}
+button,a.btn{cursor:pointer;margin:0;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+:focus-visible{outline:none;box-shadow:var(--focus)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 0}
+header h1{margin:0;font:600 26px/1.1 var(--serif);letter-spacing:-.01em;margin-right:auto}
+.live{display:flex;align-items:center;gap:8px;color:var(--steel);font-size:var(--t-sm)}
+.live i{width:10px;height:10px;border-radius:50%;background:var(--edge)}
+.live.on i{background:var(--ok)}
+.btn{min-height:48px;padding:0 20px;border-radius:14px;font-weight:700;background:var(--panel);border:1.5px solid var(--line2);color:var(--fg)}
+.btn:hover{background:var(--press)}
+.btn.pri{background:var(--btn);border-color:var(--btn);color:var(--btnfg)}
+.btn.pri:hover{background:var(--btn-2);border-color:var(--btn-2)}
+.btn.nav{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.nav:hover{background:var(--navy-2)}
+.btn:disabled{opacity:.5;cursor:default}
+.editslides{font-size:18px;padding:0 26px;min-height:52px}
+nav[role=tablist]{display:flex;gap:6px;border-bottom:1.5px solid var(--line);margin-bottom:22px}
+nav[role=tablist] button{min-height:52px;padding:0 20px;background:none;border:0;border-bottom:4px solid transparent;font-weight:700;color:var(--steel);margin-bottom:-1.5px}
+nav[role=tablist] button[aria-selected=true]{color:var(--fg);border-bottom-color:var(--brand)}
+.tab[hidden]{display:none}
+h2{margin:0 0 12px;font:600 22px/1.15 var(--serif)}
+.card{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:22px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-top:1.5px solid var(--line)}
+.row:first-child{border-top:0}
+.row .nm{flex:1 1 160px;font-weight:700;min-width:0}
+.row .val{flex:1 1 200px;min-width:0;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .acts{display:flex;gap:8px}
+.ctl .nm{flex:0 0 140px}
+.ctl .acts .btn{min-width:110px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.tile{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.tile b{display:block;font:600 34px/1.1 var(--serif)}
+.tile span{color:var(--steel);font-size:var(--t-sm)}
+.sbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sbar input{flex:1 1 220px;min-height:48px;padding:0 14px;border-radius:14px;border:1.5px solid var(--line2);background:var(--panel)}
+.ppl .row .em{flex:1.4 1 200px;min-width:0;overflow-wrap:anywhere}
+.ppl .row .nm2{flex:1 1 140px;color:var(--soft)}
+#ans .nm2{flex:0 0 auto;color:var(--soft);font-size:14px}
+.ppl .row .yn{flex:0 0 40px;color:var(--steel);text-align:right}
+.empty{padding:16px;color:var(--steel)}
+.cnt{font-weight:700;color:var(--steel)}
+@media (max-width:520px){.wrap{padding:0 14px}.row .acts{width:100%}.row .acts .btn{flex:1}.ctl .nm{flex:1 1 100%}nav[role=tablist] button{flex:1;padding:0 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Admin</h1>
+  <a class="btn pri editslides" id="editslides" href="/?edit=1" target="_self">Edit slides</a>
+  <div class="live" id="live"><i></i><span>Connecting</span></div>
+</header>
+<nav role="tablist" id="tabs" aria-label="Admin">
+  <button role="tab" data-t="overview" aria-selected="true">Overview</button>
+  <button role="tab" data-t="audience" aria-selected="false">Audience</button>
+  <button role="tab" data-t="activity" aria-selected="false">Activity</button>
+</nav>
+<main>
+<section class="tab" id="t-overview">
+  <div class="card" id="links" role="table" aria-label="Links"></div>
+  <div class="card ctl" id="ctls">
+    <div class="row" id="c-slide"><span class="nm">Slide</span><span class="val" id="slnow">Not started</span>
+      <span class="acts"><button class="btn" id="slprev" type="button">Previous</button><button class="btn" id="slnext" type="button">Next</button></span></div>
+    <div class="row" id="c-poll"><span class="nm">Poll</span><span class="val" id="pollnow">None</span>
+      <span class="acts"><button class="btn" id="pollbtn" type="button" disabled>Open poll</button></span></div>
+    <div class="row" id="c-signups"><span class="nm">Sign-ups</span><span class="val" id="sgstate">Open</span>
+      <span class="acts"><button class="btn" id="sgbtn" type="button">Close sign-ups</button></span></div>
+    <div class="row" id="c-start"><span class="acts" style="margin-left:auto"><button class="btn pri" id="startbtn" type="button">Start the keynote</button></span></div>
+  </div>
+</section>
+
+<section class="tab" id="t-audience" hidden>
+  <div class="sbar"><input type="search" id="psearch" placeholder="Search" aria-label="Search people"><span class="cnt" id="pcount"></span>
+    <a class="btn pri" id="csvlink" href="/api/registrants.csv" download>Download spreadsheet</a></div>
+  <div class="card ppl" id="ppl"></div>
+</section>
+
+<section class="tab" id="t-activity" hidden>
+  <div class="tiles" id="tiles"></div>
+  <h2>Answers per poll</h2>
+  <div class="card" id="ans"></div>
+</section>
+</main>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const ORIGIN = location.origin;
+let ST = null, ws = null, wsTry = 0, SL = null, PQ = null, ACC = null, ROOM = null, NOTES = null, JOIN = "", tab = "overview", lastSlide;
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+async function api(url, body) {
+  try {
+    const r = await fetch(url, body === undefined ? { credentials: "same-origin", cache: "no-store" }
+      : { method: "POST", credentials: "same-origin", cache: "no-store", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    if ((r.status === 401 || r.status === 403) && !url.startsWith("/api/ctl/")) { location.href = "/presenter?next=/admin"; return { ok: false, status: r.status, json: {} }; }
+    let j = {}; try { j = await r.json(); } catch (e) { /* not json */ }
+    return { ok: r.ok, status: r.status, json: j };
+  } catch (e) { return { ok: false, status: 0, json: {} }; }
+}
+
+/* ---------------------------------------------------------------- tabs */
+const TABS = ["overview", "audience", "activity"];
+const OLD = { controls: "overview", show: "overview", export: "audience", room: "audience", people: "audience" };
+function setTab(t, keep) {
+  if (!TABS.includes(t)) t = "overview";
+  tab = t;
+  document.querySelectorAll("#tabs [role=tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.t === t ? "true" : "false"));
+  TABS.forEach(n => { $("#t-" + n).hidden = n !== t; });
+  if (!keep) { try { history.replaceState(null, "", "#" + t); } catch (e) { /* ignore */ } }
+  if (t === "audience") loadAccounts(); if (t === "activity") { loadRoom(); loadNotes(); loadPolls(); }
+}
+document.querySelectorAll("#tabs [role=tab]").forEach(b => { b.onclick = () => setTab(b.dataset.t); });
+document.querySelector("#tabs").addEventListener("keydown", e => {
+  const i = TABS.indexOf(tab); if (e.key === "ArrowRight") { setTab(TABS[(i + 1) % 3]); $("#tabs [aria-selected=true]").focus(); } if (e.key === "ArrowLeft") { setTab(TABS[(i + 2) % 3]); $("#tabs [aria-selected=true]").focus(); }
+});
+
+/* ---------------------------------------------------------------- the table of links */
+const SURFACES = [
+  ["Keynote", () => "/"], ["Clicker", () => "/remote"], ["Audience app", () => JOIN || "/app"],
+  ["Slide editor", () => "/?edit=1"], ["Take-home kit", () => "/guide.md"], ["Admin", () => "/admin"]];
+function drawLinks() {
+  const box = $("#links"); box.textContent = "";
+  SURFACES.forEach(([name, path]) => {
+    const p = path(), row = el("div", "row"); row.setAttribute("role", "row"); row.dataset.s = name;
+    const open = el("a", "btn nav", "Open"); open.href = p; open.target = name === "Admin" || name === "Slide editor" ? "_self" : "_blank"; if (open.target === "_blank") open.rel = "noopener";
+    open.setAttribute("aria-label", "Open " + name);
+    const copy = el("button", "btn", "Copy link"); copy.type = "button"; copy.setAttribute("aria-label", "Copy link to " + name);
+    copy.onclick = async () => {
+      const t = ORIGIN + p;
+      try { await navigator.clipboard.writeText(t); copy.textContent = "Copied"; }
+      catch (e) { const ta = el("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); copy.textContent = "Copied"; } catch (e2) { copy.textContent = "Select and copy"; } ta.remove(); }
+      setTimeout(() => { copy.textContent = "Copy link"; }, 1500);
+    };
+    const nm = el("span", "nm", name); nm.setAttribute("role", "cell");
+    const acts = el("span", "acts"); acts.append(open, copy);
+    row.append(nm, acts); box.appendChild(row);
+  });
+}
+drawLinks();
+async function loadJoin() { const r = await api("/api/ctl/join"); if (r.ok && r.json.path) { JOIN = r.json.path; drawLinks(); } }
+
+/* ---------------------------------------------------------------- live state */
+function applyState(s) {
+  if (!s) return;
+  ST = s; renderSlide(); renderPoll();
+  if (s.slide !== lastSlide) { lastSlide = s.slide; loadRemote(); }
+  if (s.qv != null && PQ && s.qv !== PQ.qv) loadPolls();
+}
+function connect() {
+  if (!window.WebSocket || ws) return;
+  let w; try { w = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/api/ws"); } catch (e) { return; }
+  ws = w;
+  w.onopen = () => { wsTry = 0; $("#live").classList.add("on"); $("#live span").textContent = "Live"; };
+  w.onmessage = e => { try { const m = JSON.parse(e.data); if (m.t === "state") applyState(m.s); } catch (_) { /* ignore */ } };
+  const gone = () => { if (ws !== w) return; ws = null; $("#live").classList.remove("on"); $("#live span").textContent = "Reconnecting"; setTimeout(connect, Math.min(8000, 700 * (++wsTry))); };
+  w.onclose = gone; w.onerror = gone;
+}
+async function pollState() { const r = await api("/api/state"); if (r.ok) applyState(r.json); }
+async function loadRemote() {
+  const r = await api("/api/remote"); if (!r.ok || !r.json.slides) return;
+  SL = r.json.slides.map(x => ({ i: x.i, id: x.id, title: x.title || x.id, hidden: !!x.hidden }));
+  renderSlide(); renderPoll();
+}
+async function loadPolls() {
+  const r = await api("/api/poll/questions");
+  if (r.ok && Array.isArray(r.json.questions)) { PQ = r.json.questions.filter(q => !q.part); PQ.qv = r.json.qv; }
+  renderPoll(); renderActivity();
+}
+async function loadAccounts() { const r = await api("/api/ctl/accounts"); ACC = r.ok ? r.json : null; renderPeople(); renderSignups(); renderActivity(); }
+async function loadRoom() { const r = await api("/api/ctl/room"); ROOM = r.ok ? r.json : null; renderActivity(); }
+async function loadNotes() { const r = await api("/api/ctl/notes"); NOTES = r.ok ? (r.json.notes || []) : null; renderActivity(); }
+
+/* ---------------------------------------------------------------- overview controls */
+function renderSlide() {
+  const cur = ST && ST.slide != null ? ST.slide : null, sh = (SL || []).filter(x => !x.hidden);
+  let t = "Not started";
+  if (cur != null) {
+    const k = sh.findIndex(x => x.i === cur), any = (SL || []).find(x => x.i === cur);
+    t = k >= 0 ? "Slide " + (k + 1) + " of " + sh.length + ": " + sh[k].title : any ? "Hidden slide: " + any.title : "Slide " + (cur + 1);
+  }
+  $("#slnow").textContent = t; $("#slnow").title = t;
+}
+function currentPoll() {
+  if (!ST) return null;
+  const live = ST.liveQ || null;
+  if (live) return { id: live, live: true };
+  const cur = SL && ST.slide != null ? SL.find(x => x.i === ST.slide) : null;
+  const q = cur && PQ ? PQ.find(x => x.slide === cur.id) : null;
+  return q ? { id: q.id, live: false } : null;
+}
+function renderPoll() {
+  const p = currentPoll(), q = p && PQ ? PQ.find(x => x.id === p.id) : null, b = $("#pollbtn");
+  $("#pollnow").textContent = p ? (p.live ? "Open: " : "Closed: ") + (q ? q.text : p.id) : "None on this slide";
+  $("#pollnow").title = $("#pollnow").textContent;
+  b.disabled = !p; b.textContent = p && p.live ? "Close poll" : "Open poll"; b.classList.toggle("pri", !!p && !p.live);
+}
+$("#pollbtn").onclick = async () => {
+  const p = currentPoll(); if (!p) return;
+  const r = await api(p.live ? "/api/ctl/pollclose" : "/api/ctl/pollopen", { q: p.id });
+  if (r.ok && ST && r.json) ST = Object.assign({}, ST, { roomQ: r.json.roomQ || null, closed: r.json.closed || [], liveQ: r.json.liveQ || null });
+  renderPoll(); pollState();
+};
+function renderSignups() { const open = ACC ? ACC.open !== false : true; $("#sgstate").textContent = open ? "Open" : "Closed"; $("#sgbtn").textContent = open ? "Close sign-ups" : "Open sign-ups"; $("#sgbtn").classList.toggle("pri", !open); }
+$("#sgbtn").onclick = async () => { const open = ACC ? ACC.open !== false : true; const r = await api("/api/ctl/signups", { open: !open }); if (r.ok) loadAccounts(); };
+$("#slprev").onclick = async () => { await api("/api/ctl/back", {}); pollState(); };
+$("#slnext").onclick = async () => { await api("/api/ctl/next", {}); pollState(); };
+$("#startbtn").onclick = async () => {
+  if (!(ST && ST.paired && ST.paired.slides)) window.open("/", "_blank");
+  if (ST && ST.slide == null) await api("/api/ctl/jump", { slide: 0 });
+  pollState();
+};
+
+/* ---------------------------------------------------------------- audience */
+function renderPeople() {
+  const box = $("#ppl"); box.textContent = "";
+  if (!ACC) { box.appendChild(el("p", "empty", "Not loaded")); return; }
+  const q = $("#psearch").value.trim().toLowerCase(), all = ACC.accounts || [];
+  const rows = q ? all.filter(a => ((a.email || "") + " " + (a.name || "")).toLowerCase().includes(q)) : all;
+  $("#pcount").textContent = q ? rows.length + " of " + all.length : String(all.length);
+  if (!rows.length) { box.appendChild(el("p", "empty", all.length ? "No match" : "No one yet")); return; }
+  rows.forEach(a => { const r = el("div", "row"); r.append(el("span", "em", a.email || ""), el("span", "nm2", a.name || ""), el("span", "yn", a.optin ? "Yes" : "No")); box.appendChild(r); });
+}
+$("#psearch").oninput = renderPeople;
+
+/* ---------------------------------------------------------------- activity */
+function renderActivity() {
+  const tiles = $("#tiles"); tiles.textContent = "";
+  const n = v => v == null ? 0 : v;
+  const phones = ROOM && typeof ROOM.phones === "number" ? ROOM.phones : ST && typeof ST.viewers === "number" ? ST.viewers : 0;
+  [["Phones now", phones], ["Signed up", ROOM ? ROOM.accounts : ACC ? ACC.count : 0], ["Notes shared", NOTES ? NOTES.length : 0], ["Agencies", ROOM ? ROOM.agencies : 0]].forEach(([l, v]) => {
+    const t = el("div", "tile"); t.append(el("b", "", String(n(v))), el("span", "", l)); tiles.appendChild(t);
+  });
+  const box = $("#ans"); box.textContent = "";
+  const ans = (ROOM && ROOM.answered) || {};
+  if (!PQ || !PQ.length) { box.appendChild(el("p", "empty", "No polls")); return; }
+  const shown = (SL || []).filter(x => !x.hidden), where = id => { const k = shown.findIndex(x => x.id === id); return k < 0 ? "" : "Slide " + (k + 1); };   // two polls share one question: the slide tells them apart
+  PQ.forEach((q, i) => { const r = el("div", "row"); r.dataset.q = q.id; r.append(el("span", "nm", (i + 1) + ". " + (q.text || q.id)), el("span", "nm2", where(q.slide)), el("span", "cnt", String(n(ans[q.id])))); box.appendChild(r); });
+}
+
+/* ---------------------------------------------------------------- start */
+const first = location.hash.replace("#", "");
+setTab(OLD[first] || first, true);
+connect(); pollState(); loadRemote(); loadPolls(); loadAccounts(); loadRoom(); loadNotes(); loadJoin();
+setInterval(pollState, 5000);
+setInterval(loadRoom, 5000);
+setInterval(() => { loadAccounts(); loadNotes(); }, 10000);
+window.__admin = { setTab, ST: () => ST, PQ: () => PQ };
+</script>
+</body>
+</html>

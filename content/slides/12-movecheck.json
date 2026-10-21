@@ -1,0 +1,12 @@
+{
+  "id": "movecheck",
+  "t": "movecheck",
+  "dark": true,
+  "kick": "A QUESTION FOR THE ROOM",
+  "title": "Which move will you try first?",
+  "em": "try first?",
+  "ticks": [],
+  "notes": [
+    "Added slide. The four moves are done. Ask which one they will try first and let the bars fill. The answers are the four move names, same words on the phone. Skip it if time is short."
+  ]
+}

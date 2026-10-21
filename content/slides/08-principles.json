@@ -1,0 +1,35 @@
+{
+  "id": "principles",
+  "builds": "click",
+  "t": "principles",
+  "kick": "THE FOUR MOVES",
+  "title": "Four moves when you return to work.",
+  "em": "when you return to work.",
+  "items": [
+    [
+      "Challenge",
+      "Question the assumption.",
+      "Does the cooperative contract scope actually match our need, or should we run our own RFP?"
+    ],
+    [
+      "Invert",
+      "Write the protest first.",
+      "Draft the letter a losing bidder would file before you post the RFP."
+    ],
+    [
+      "Multiply",
+      "Ask for the bad options too.",
+      "Ten options to stop losing track of requests, including three we would never consider."
+    ],
+    [
+      "Rehearse",
+      "Practice the hard conversation.",
+      "A department director wants a bid waiver. Rehearse that meeting first."
+    ]
+  ],
+  "hl": "The tool widens what you're willing to consider. The judgment stays yours.",
+  "ticks": ["M1", "M2", "M3"],
+  "notes": [
+    "Added summary slide. The four moves are done, so close the loop in one pass: one line per move and one procurement example each. Click once per move. Then say the last line: the tool widens the range, the judgment stays theirs. The four written move slides sit behind this one, hidden, if you want to open one."
+  ]
+}

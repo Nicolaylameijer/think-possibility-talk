@@ -1,0 +1,35 @@
+{
+  "id": "system",
+  "builds": "click",
+  "t": "system",
+  "kick": "THE SYSTEM",
+  "title": "Four moves, one real decision.",
+  "em": "one real decision.",
+  "moves": [
+    ["1", "Challenge", "What am I assuming, and which assumption needs testing?"],
+    ["2", "Invert", "How would this fail? Write the protest before a losing bidder does."],
+    ["3", "Multiply", "Give me ten options, including three we would never consider."],
+    ["4", "Rehearse", "Play the person I am about to face. Then tell me what I missed."]
+  ],
+  "roles": ["Challenger", "Red team", "Brainstorming partner", "Sounding board"],
+  "foot": "Approved tools. Fictional details. No invented facts or legal citations. People verify and decide.",
+  "tiles": [
+    "img/tile-cover.webp",
+    "img/tile-ladder.webp",
+    "img/tile-pulse.webp",
+    "img/tile-where.webp",
+    "img/tile-system.webp",
+    "img/tile-move4.webp",
+    "img/tile-principles.webp",
+    "img/tile-movecheck.webp",
+    "img/tile-guardrails.webp",
+    "img/tile-thisweek.webp",
+    "img/tile-pledge.webp",
+    "img/tile-close.webp",
+    "img/tile-walkout.webp"
+  ],
+  "ticks": ["S1", "S2"],
+  "notes": [
+    "2:49. Two minutes. The four moves map to what the program promised: a challenger (moves one and two), a brainstorming partner (move three), a sounding board (move four). Read the four moves out loud. That is the whole toolkit. Set the rhythm, same as this morning. I run it live on one example for about two, you run it on yours for three, one minute to compare with a neighbor. Have them pick their decision now, before the first move. A real one, nothing sensitive: a cooperative contract versus a fresh solicitation, whether to split a scope, how to handle a department that wants a bid waiver. Something they are actually chewing on. Thirty seconds, write it at the top of the page. That decision is the thread for the next twenty-four minutes. The example you will use on screen: a department has asked to piggyback on a cooperative contract for a software system rather than run a solicitation. Fictional enough to be safe, real enough that every buyer in the room has lived it. Transition: \"Move one. The question I ask before every recommendation.\""
+  ]
+}

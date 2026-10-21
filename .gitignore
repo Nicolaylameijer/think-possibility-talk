@@ -1,0 +1,14 @@
+node_modules
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+.wrangler/
+.DS_Store
+# made by `node build.mjs`
+src/generated/
+public/_deck/
+public/_tpl/
+public/brand.css
+public/ui.css
+public/robots.txt

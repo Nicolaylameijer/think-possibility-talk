@@ -1,0 +1,28 @@
+{
+  "id": "thisweek",
+  "builds": "click",
+  "t": "cards",
+  "kick": "WHERE DO I START · THIS WEEK",
+  "title": "Two questions before you commit.",
+  "em": "before you commit.",
+  "cols4": true,
+  "items": [
+    ["Challenge one memo", "Before it goes up the chain, ask what it assumes."],
+    [
+      "Red-team one scope",
+      "Write the losing bidder's protest before you post the RFP.",
+      "Exploratory. Have your attorney review it before it shapes the RFP."
+    ],
+    [
+      "Ten options for one problem",
+      "Photograph the whiteboard. Ask for ten options, including three we would never consider."
+    ],
+    ["Rehearse one meeting", "The night before. Then have the real one, in person."]
+  ],
+  "asks": ["What have we missed?", "What assumptions have we made?"],
+  "hl": "Ask both of an AI tool on one real decision this week.",
+  "ticks": ["H4"],
+  "notes": [
+    "3:18. Three minutes. Two to choose and write, one to say it to a neighbor. Before anyone commits to a decision, two questions. What have we missed? What assumptions have we made? Ask both of the tool, then ask your team. The four cards are the four moves aimed at ordinary work. The red-team card is an exploratory idea, so say it should go through procurement review before anyone relies on it. The whiteboard photo is your everyday hook: snap the board at the end of a meeting and ask the tool to name three gaps we have not considered. It takes a minute and it is the most fun any of them will have with the tool this month. The last click asks them to try both questions on one real decision this week. Possibility thinking that stays on a screen changes nothing, so tell a colleague what you found. Transition: \"Questions. Then I'll let you go find the raffle.\""
+  ]
+}

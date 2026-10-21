@@ -1,0 +1,50 @@
+name = "possibility"
+main = "src/worker.js"
+compatibility_date = "2026-10-11"
+workers_dev = true
+
+# Static files (engine, styles, fonts, images, page templates). run_worker_first means the Worker
+# sees every request and decides who may fetch what; nothing in here is public by itself.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "none"
+not_found_handling = "none"
+
+# One Event object holds the room: current slide, beat, effects, blackout, timer, Maisie log.
+[[durable_objects.bindings]]
+name = "EVENT"
+class_name = "Event"
+
+# SQLite-backed class. This is the class type that is available on the Workers Free plan
+# as well as on Workers Paid.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Event"]
+
+[build]
+command = "node build.mjs"
+
+[vars]
+# Models (change here, then redeploy)
+MAISIE_MODEL = "claude-sonnet-5"
+MAISIE_PRESENTER_MODEL = "claude-opus-5-5"
+MAISIE_EFFORT = "low"
+# Total model calls for the whole event; the presenter can reset the counter.
+MAISIE_MAX_CALLS = "500"
+# 1 = canned replies, no network call (local testing only). Leave 0 in production.
+MAISIE_MOCK = "0"
+# 1 = switch Maisie off and show the offline message.
+MAISIE_OFF = "0"
+# 1 = Maisie may send pop-ups to attendees after a slide has been on screen for 8 seconds (one model call per slide).
+MAISIE_PROACTIVE = "0"
+# 0 = audience messages go to the question board and no model is called for them (default).
+# 1 = each audience message is a live Maisie chat (one model call per message). Aran can flip this
+# at runtime from the question board page.
+MAISIE_LIVE_CHAT = "0"
+# Who owns the words. "live" (default): the in-deck editor and Maisie's key save wording on the live deck.
+# "repo": the words are edited in the repo; every /api/copy write answers 409 "edit in the repo" and the editor says so.
+EDITOR_MODE = "live"
+
+# Secrets (never in this file): PRESENTER_PASSWORD, SESSION_SECRET, ANTHROPIC_API_KEY. The audience needs no event code: people sign in with an email (no PIN), and those accounts live in the Durable Object

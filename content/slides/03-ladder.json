@@ -1,0 +1,23 @@
+{
+  "id": "ladder",
+  "builds": "click",
+  "t": "ladder",
+  "farm": true,
+  "kick": "THE INNOVATION LADDER",
+  "title": "Probability improves the plow. Possibility asks why we have farms at all.",
+  "em": "Possibility asks why we have farms at all.",
+  "steps": [
+    ["STEP 1", "A better plow", "Same job, less effort. Where most AI use stops."],
+    ["STEP 2", "A tractor", "A different kind of work. You have to learn to drive it."],
+    [
+      "STEP 3",
+      "Why do we even need farms?",
+      "The question the ladder was hiding. This is the leap."
+    ]
+  ],
+  "hl": "Probability climbs the stairs. Possibility invents an elevator.",
+  "ticks": ["L1", "L2", "L3"],
+  "notes": [
+    "2:44. Two minutes. The tractor story, told tight. A better plow is the same job with less sweat. That is what most people use AI for, and it is a real win. The tractor is a different kind of work, and you have to learn to drive it. That was this morning. But the ladder hides the third step: at some point somebody asks why we even need farms, and the whole game changes. Probability climbs the ladder one rung at a time. Possibility looks for the rung that is not there. Keep this under two minutes. You have told this story many times and you know it can run long. Save the DeLorean line: the picture is the last slide of the day and it lands harder if the room has not heard the quote yet. Transition: \"And before anyone asks what this looks like in government, here's where I think it goes.\""
+  ]
+}

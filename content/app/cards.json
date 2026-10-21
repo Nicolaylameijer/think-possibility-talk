@@ -1,0 +1,87 @@
+{
+  "cover": {
+    "title": "Think possibility, not probability",
+    "body": "AI can be a thought partner, not only a faster typist. Ask what you have not considered.",
+    "example": "Example: before you draft the bid memo, ask what the memo is missing."
+  },
+  "confession": {
+    "title": "You get the average",
+    "body": "Ask for an answer and you get the middle of the curve. New options live at the edges.",
+    "example": "Example: ask for a vendor shortlist and you get the three everyone knows."
+  },
+  "pulse": {
+    "title": "How often does AI show up in your week?",
+    "body": "Answer on your phone and watch the room fill in. We ask again at the end.",
+    "example": "Example: drafting with it is common. Deciding with it is a different step."
+  },
+  "ladder": {
+    "title": "Possibility asks why we have farms",
+    "body": "Probability makes the plow better. Possibility invents the tractor, then hydroponics.",
+    "example": "Example: faster contract review is a better plow. Do we need this contract?"
+  },
+  "where": {
+    "title": "It's 2 a.m. and a resident has a question",
+    "body": "Harbor, the agency's resident assistant, answers from the agency's own rules. A person reviews the work the next morning.",
+    "example": "Example: a permit deadline question at midnight, checked by staff by breakfast."
+  },
+  "system": {
+    "title": "Four moves, one real decision",
+    "body": "Challenge, Invert, Multiply, Rehearse. Take one real decision through all four.",
+    "example": "Example: one open purchase, tested from four sides."
+  },
+  "move1": {
+    "title": "Question the assumption",
+    "body": "Every decision rests on something you believe. Say it out loud and test it.",
+    "example": "Example: does the RFP scope still match what residents need?"
+  },
+  "move2": {
+    "title": "Name the opposition",
+    "body": "Write the objection before someone else does. It shows you what you are missing.",
+    "example": "Example: draft the protest letter a losing bidder would send."
+  },
+  "move3": {
+    "title": "Widen the range",
+    "body": "Two options is a choice between them. Add more, including the odd ones.",
+    "example": "Example: you have three bidders. Add a fourth, or no purchase at all."
+  },
+  "move4": {
+    "title": "Rehearse the conversation you're dreading",
+    "body": "Pick the person you least want to talk to. Practice three exchanges, then ask what you missed.",
+    "example": "Example: a department director wants a bid waiver. Rehearse that meeting first."
+  },
+  "principles": {
+    "title": "Four moves when you return to work",
+    "body": "Challenge, Invert, Multiply, Rehearse. The tool widens what you consider. The judgment stays yours.",
+    "example": "Example: does the cooperative contract scope match what we need?"
+  },
+  "movecheck": {
+    "title": "Which move will you try first?",
+    "body": "Pick one of the four and watch the room choose.",
+    "example": "Example: start with Challenge on the memo you send this week."
+  },
+  "guardrails": {
+    "title": "Possibility is not permission",
+    "body": "Give it your values, check its work, keep sensitive data out, and ask IT when unsure.",
+    "example": "Example: no resident data goes in. Ask IT which tools are approved."
+  },
+  "thisweek": {
+    "title": "Two questions before you commit",
+    "body": "What have we missed? What assumptions have we made? Ask an AI tool both about one real decision.",
+    "example": "Example: ask both of a scope before it goes up the chain."
+  },
+  "pledge": {
+    "title": "How often does AI show up in your week?",
+    "body": "Answer twice: Today, and where you expect to be in one month.",
+    "example": "Example: a few times a month today, weekly in one month."
+  },
+  "close": {
+    "title": "Expand your perspective, then decide",
+    "body": "The tool widens what you consider. The judgment stays yours. Take it into a real conversation.",
+    "example": "Example: more bidders on the table, and a person still signs."
+  },
+  "walkout": {
+    "title": "Where we're going, we don't need roads",
+    "body": "Thinking outside the box in the new world of AI.",
+    "example": "Example: ask for the option nobody on the team has raised."
+  }
+}

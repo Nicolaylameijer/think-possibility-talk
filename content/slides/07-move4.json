@@ -1,0 +1,142 @@
+{
+  "id": "move4",
+  "builds": "click",
+  "dark": true,
+  "t": "move",
+  "n": 4,
+  "ben": true,
+  "kick": "MOVE 4 OF 4 · SOUNDING BOARD",
+  "title": "Rehearse the conversation you're dreading",
+  "em": "you're dreading",
+  "p": "P4",
+  "scenario": "The Public Works director wants a bid waiver: award a pavement management system, software plus a citywide condition survey, about $340,000, to the vendor whose free six-month pilot just wrapped up. A state grant funds most of it. You are the procurement officer. The director asked for ten minutes and has the sole source form half filled in.",
+  "end": "Practice is free. The real conversation has no retry.",
+  "talk": [
+    {
+      "who": "director",
+      "line": "Sign the sole source form this week. The grant has to be encumbered by December 31, the pilot proved the product, and nobody else does AI crack detection from a dash cam."
+    },
+    {
+      "who": "me",
+      "line": "Walk me through December 31. What has to be true by then, and what happens on January 1 if it isn't?",
+      "pick": {
+        "prompt": "The director led with the deadline, the pilot and the vendor. Your first move?",
+        "options": [
+          {
+            "line": "The code requires competition at this amount. A deadline isn't an exemption, a pilot isn't a bid. I can't sign this.",
+            "verdict": "weak",
+            "coach": "True, and heard as obstruction. You led with the rule. The director now has a story for the city manager: procurement said no.",
+            "reply": "That's exactly what I told the manager you'd say."
+          },
+          {
+            "line": "Walk me through December 31. What has to be true by then, and what happens on January 1 if it isn't?",
+            "verdict": "best",
+            "coach": "You led with their outcome. The deadline becomes a shared fact you can both examine instead of a weapon.",
+            "reply": "Nobody has asked me that yet. Let me tell you what the letter says."
+          },
+          {
+            "line": "Send me the form, the award letter and the pilot report, and I'll have an answer for you by the end of next week.",
+            "verdict": "ok",
+            "coach": "Diligent and passive. A week passes, the director tells everyone it's approved, and you review it with the clock running. Ask now.",
+            "reply": "I have the form right here. How long is your review going to take?"
+          }
+        ]
+      }
+    },
+    {
+      "who": "director",
+      "line": "The money has to be encumbered or it goes back to the state. The award letter says so. An RFP takes you four months. You do the math."
+    },
+    {
+      "who": "me",
+      "line": "Let's read the letter. Encumber usually means a signed contract, not a check. A state or cooperative contract could mean a purchase order in three weeks. When did it arrive?",
+      "coach": "Coach: a deadline is a fact to verify, not an argument to accept. Pull the document. Then ask the grant manager today about an extension, and whether the award allows a non-competitive buy at all."
+    },
+    {
+      "who": "director",
+      "line": "August. We've been busy. And why run a competition when I already know who wins? They're the only ones who can do this. I have a letter from the vendor saying so."
+    },
+    {
+      "who": "me",
+      "line": "That letter is their belief. Name the function nobody else does, not the brand. Give me until Thursday to check the market.",
+      "pick": {
+        "prompt": "\"They're the only ones who can do this.\" What do you say?",
+        "options": [
+          {
+            "line": "That letter is their belief. Name the function nobody else does, not the brand. Give me until Thursday to check the market.",
+            "verdict": "best",
+            "coach": "You separated the need from the brand and offered the market check yourself, fast: state contract, cooperatives, three vendors. You also heard August and let it go; the planning gap is noted for the file, not thrown in their face.",
+            "reply": "You want a function, not a brand. Okay, let me put it in plain words."
+          },
+          {
+            "line": "Prove it. If nobody else can do this, somebody has done the market research that shows it. Send me that and we'll talk.",
+            "verdict": "ok",
+            "coach": "Right question, wrong tone. The director now defends the vendor instead of describing the need.",
+            "reply": "I'm an engineer, not a market researcher. That's your department, isn't it?"
+          },
+          {
+            "line": "If you're that sure, sign the justification yourself. It's your need and your vendor's letter, so it's your name, not mine.",
+            "verdict": "weak",
+            "coach": "You handed over the decision and kept the risk: the determination is a procurement finding, and an audit or a protest comes back to your office.",
+            "reply": "Done. Where do I sign?"
+          }
+        ]
+      }
+    },
+    {
+      "who": "director",
+      "line": "Dash cam crack detection, scored on my engineers' index. Check, but every day comes off your clock. My crews trust the dashboards and the price is budgeted. Don't start on cost."
+    },
+    {
+      "who": "me",
+      "line": "Good. Pilot data, your index and training go in the scope as outcomes, not their product. I hear you on cost, but a budget line is permission to spend, not proof the price is fair.",
+      "coach": "Coach: switching costs become requirements written as outcomes, never as the incumbent's features. A budget line is not price reasonableness: the pilot was free, and this is where it gets paid for. Pull the state contract and two cities' prices, and split the quote into software and survey."
+    },
+    {
+      "who": "director",
+      "line": "The city manager heard the pitch and said yes in the budget meeting. I can call her right now. Do you want to be the office that sent $300,000 back to the state over paperwork?"
+    },
+    {
+      "who": "me",
+      "line": "Let's brief her together tomorrow. One page from me: this award gets posted, and a protest could hold it past your deadline.",
+      "pick": {
+        "prompt": "The city manager is in the room now, by proxy. Your move?",
+        "options": [
+          {
+            "line": "Okay. If she approved it, that's her call. Write it up with the pilot results attached and I'll process it this week.",
+            "verdict": "weak",
+            "coach": "Budget approval is not a sole source determination. The file will show a waiver with no justification and your name on the order.",
+            "reply": "Great. I'll have it on your desk in an hour."
+          },
+          {
+            "line": "Go ahead and call her. I'll explain why I can't sign a sole source that won't survive a protest, and she can decide.",
+            "verdict": "ok",
+            "coach": "Right risk, wrong room. You made it a contest of authority. Win the call and you still lose the director, and you need the director for the next ten contracts.",
+            "reply": "Fine. Let's see who she backs."
+          },
+          {
+            "line": "Let's brief her together tomorrow. One page from me: this award gets posted, and a protest could hold it past your deadline.",
+            "verdict": "best",
+            "coach": "You turned an escalation into a joint briefing and named the real risks to their outcome: a protest can hold the award past the deadline, and a waiver with no file can make the grant money unallowable after the fact. Then offer the faster path.",
+            "reply": "Together? I expected you to tell me to cancel the call."
+          }
+        ]
+      }
+    },
+    {
+      "who": "director",
+      "line": "A protest could hold it past my deadline? Nobody told me that. Still, if this gets competed and my vendor loses, my crews lose a tool they like and I lose six months. You get that?"
+    },
+    {
+      "who": "me",
+      "line": "I do. If Thursday's check is empty, I post the notice and write the determination for council. If other names come back, a fast RFP your vendor can compete in. Friday. In writing.",
+      "coach": "Coach: end with the next step and a date. You never said no. Notice of intent first, determination second, council signs at this size, and the grant manager's answer on whether a waiver is allowed goes in the file. Your name next to theirs."
+    },
+    {"who": "director", "line": "Friday. In writing. I'm holding you to it."}
+  ],
+  "hl": "Your turn: Pick the person you least want to have this conversation with. Three exchanges. Then ask what you missed.",
+  "ticks": ["M4"],
+  "notes": [
+    "3:09. Six minutes: two live, three theirs, one with a neighbor. Run two exchanges live with the department director. Let it push back hard. Then ask it to step out and debrief. The debrief is the part that sells the move: \"you led with policy, they heard obstruction; try leading with their outcome.\" Say what makes it a sounding board and not a crutch: it does not replace the real conversation. It makes you better in the real conversation, which is with a person, in a room. Push them toward the room. Three minutes for them. The neighbor debrief: what did the tool say you missed, and do you agree? At 3:15 they have run all four moves on a real decision. Say it: \"That's the toolkit. Everything from here is about using it well.\""
+  ]
+}

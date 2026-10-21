@@ -1,0 +1,24 @@
+{
+  "id": "close",
+  "builds": "click",
+  "t": "close",
+  "dark": true,
+  "kick": "QUESTIONS",
+  "title": "Expand your perspective, then decide.",
+  "em": "then decide.",
+  "sub": "How often AI shows up in your week: Today vs where you expect to be in one month",
+  "legend": ["Today", "In one month"],
+  "body": [
+    "You have a brief, four moves, and two questions to ask before you commit. The tool widens what you're willing to consider. The judgment stays yours. Take what you learn into a real conversation. Thank you, Arizona."
+  ],
+  "contact": ["Aran D Raz", "aran@govaipro.com", "govaipro.com", "linkedin.com/in/aran-d-raz"],
+  "portrait": {
+    "img": "img/maisie.jpg",
+    "alt": "Maisie, Aran's AI assistant",
+    "cap": "Maisie, Aran's AI assistant"
+  },
+  "ticks": ["Q1"],
+  "notes": [
+    "3:21. Nine minutes: seven for questions, two to close. Hard stop at 3:30. Dr. Sullivan has this room at 3:40 and closing remarks follow at 4:30, so do not run over. Open the floor. Invite someone to share the wildest \"never\" option they got in move three. That question gets the room laughing and gets the shy people talking. When a question is about a specific tool, separate what you know from what they should check in their own account and their own IT policy. When it is about whether any of this is allowed at their agency, name the owner: their AI policy, their IT, their attorney. Do not improvise permission for someone else's jurisdiction. When someone asks how to do this for a whole team, or how Maisie is actually built, that is the workshop conversation. Michael has your contact. Better yet, find you at the expo. Close on the line on the screen: expand your perspective, then decide. They leave with a brief from this morning, four moves they can use with any tool, and two questions to ask before they commit. Thank the chapter, the conference committee, and Michael. Say you will be around until the raffle and you would rather talk than trade emails. Then click once more. The DeLorean is the walk-out slide, and the line is on the picture, so you do not say it. Let them read it."
+  ]
+}

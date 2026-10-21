@@ -1,0 +1,27 @@
+{
+  "id": "move3",
+  "builds": "click",
+  "t": "move",
+  "n": 3,
+  "kick": "MOVE 3 OF 4 · BRAINSTORMING PARTNER",
+  "title": "Multiply the options. Ask for the bad ones too.",
+  "em": "Ask for the bad ones too.",
+  "p": "P3",
+  "dots": [7, 3],
+  "blocks": [
+    {
+      "h": "Why ask for bad ideas",
+      "t": "The first seven answers are the average. The three \"never\" options are where \"why do we even need farms\" lives."
+    },
+    {
+      "h": "The rule",
+      "t": "You are expanding the range you are willing to consider. You are not committing to any of it.",
+      "foot": "Judgment comes after."
+    }
+  ],
+  "hl": "Your turn: Choose an unexpected option and consider how you would test it.",
+  "ticks": ["M3"],
+  "notes": [
+    "3:03. Six minutes: two live, three theirs, one with a neighbor. This is the possibility move, and it is the heart of the session title. Run it live on the cooperative contract question, but reframe the outcome first: the outcome is not \"buy the software,\" it is \"the department stops losing track of requests.\" Watch what happens when you ask for ten options to get that outcome. Several will not involve buying anything. The three \"never\" options are the point. The first seven answers are the average, and you could have generated them yourself. The three the tool flags as \"a procurement office would never consider\" are where the tractor becomes \"why do we even need farms.\" Most of them will be bad. One of them, occasionally, is the answer nobody in the building was allowed to say out loud. Then the rule on the right card, which keeps this responsible: you are expanding the range you are willing to consider. You are not committing to anything. Possibility is a thinking step, not an action step. Judgment, policy and the code all still apply afterward. Say this clearly, because this room will worry about it, and they should. Three minutes for them. The neighbor exercise is the fun part: defend one of your \"never\" options for thirty seconds with a straight face. Transition: \"Last move. You have a plan and you have stress-tested it. Now rehearse the conversation.\""
+  ]
+}

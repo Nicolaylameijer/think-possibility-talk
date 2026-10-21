@@ -1,0 +1,22 @@
+{
+  "id": "where",
+  "t": "where",
+  "dark": true,
+  "builds": "click",
+  "kick": "WHERE THIS GOES",
+  "title": "It's 2 a.m. A resident has a question. The City answers.",
+  "em": "The City answers.",
+  "sub": "The agency's own rules and standards, available to residents when the building is dark. A person reviews the work the next morning.",
+  "hl": "Expertise working with the process.",
+  "cols": [
+    {"h": "Probability says", "t": "Extend the call center hours. Add an FAQ page."},
+    {
+      "h": "Possibility asks",
+      "t": "What if a resident could get an accurate answer at 2 a.m., and a person reviewed it the next morning?"
+    }
+  ],
+  "ticks": ["G1", "G2", "G3"],
+  "notes": [
+    "2:47. Two minutes. This is your endgame vision, so tell it with conviction and then get out. Paint the picture. It is 2 a.m. A resident has a question about a permit, a fee, a deadline. They call and the office is closed. Now picture the agency's resident assistant, Harbor, answering instead, working from the agency's own rules and standards. The resident gets an accurate answer. Click through the night one beat at a time. Nothing moves until you click. The next morning a person reviews the work, corrects anything that is off, and approves it. The point for this room is expertise working with the process, not instead of it. Be honest that this is a destination, not a Monday deliverable. Nobody in the room is building this next week. But every move we are about to practice is a step on that road, and the road starts with asking better questions. Transition: \"Four moves. Each one is something you can ask any tool, today. Let's practice all four.\""
+  ]
+}

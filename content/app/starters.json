@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Find the blind spots",
+    "text": "I am planning to [describe the plan or decision]. List the assumptions I am making, rank them by how much it would hurt if each one is wrong, and tell me which one to test first and how."
+  },
+  {
+    "title": "Argue the other side",
+    "text": "Here is my plan: [paste]. Act as a skeptical reviewer who wants it to fail. Give me the three strongest objections, then tell me how I would answer each one."
+  },
+  {
+    "title": "Plain language",
+    "text": "Rewrite this for someone who has never worked in my field, in under 150 words: [paste]. Then list anything important you had to leave out."
+  },
+  {
+    "title": "Turn a mess into next steps",
+    "text": "Here are my rough notes from a meeting: [paste]. Give me the decisions made, the open questions, and next steps with a suggested owner for each. Ask me about anything missing."
+  },
+  {
+    "title": "Ten minutes to prepare",
+    "text": "I have ten minutes before I meet [who] about [topic]. Here is the background: [paste]. Give me the five things I need to know and the two questions I should ask."
+  },
+  {
+    "title": "Check my thinking",
+    "text": "Here is my reasoning: [paste]. Where is it weakest? What evidence would change my mind? Separate what is known from what is guessed."
+  },
+  {
+    "title": "Make it a checklist",
+    "text": "I do this task often: [describe it]. Turn it into a short checklist with a final check before I send or sign anything."
+  },
+  {
+    "title": "Teach me the basics",
+    "text": "Teach me the basics of [topic] in five short points, then quiz me with three questions, one at a time, and tell me how I did."
+  }
+]

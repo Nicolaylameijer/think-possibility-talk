@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0f1a2e">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:,">
+<title>Aran remote</title>
+<link rel="stylesheet" href="/brand.css">
+<link rel="stylesheet" href="/ui.css">
+<style>
+:root{--navy:#0f1a2e;--navy2:#15233b;--orange:#e25c0f;--orange-hi:#f07a2a;--gold:#e7a23c;--teal:#2BB3A3;--lilac:#9B8CF2;--line:rgba(255,255,255,.14)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none}
+body{background:var(--navy);color:#fff;font:16px/1.4 var(--font);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;height:100dvh;touch-action:manipulation}
+button{font:inherit;color:inherit;cursor:pointer;border:0;margin:0}
+/* v4 a17 remote: layout B, thumb arc (mockup remote-b). Mode keys stack up the right edge, Back and Next sit on the bottom edge. */
+.stage{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 124px;grid-template-rows:auto auto auto auto minmax(0,1fr) auto;gap:12px;padding:calc(10px + env(safe-area-inset-top)) 16px 12px;max-width:640px;width:100%;margin:0 auto;align-content:stretch}
+.kick{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:0 4px;margin-bottom:-6px}
+.apl{flex:none;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:none;border-radius:12px;padding:3px 10px;border:1px solid var(--line);color:rgba(255,255,255,.75);background:rgba(255,255,255,.07)}
+.apl.on{color:var(--navy);background:var(--gold);border-color:var(--gold)}
+.apl[hidden]{display:none}
+.live{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:14px;letter-spacing:.04em;text-transform:none;color:rgba(255,255,255,.7);font-weight:600}
+.live i{width:10px;height:10px;border-radius:50%;background:#8a94a6}.live.on i{background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.ttl{grid-column:1/-1;margin:0;padding:0 4px;font:600 26px/1.12 var(--serif);letter-spacing:-.01em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.nextup{grid-column:1/-1;font-size:16px;color:rgba(255,255,255,.72);padding:0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:-6px}
+.nextup b{color:#fff;font-weight:700}
+.notes{grid-column:1/-1;grid-row:5;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;border-radius:20px;background:rgba(255,255,255,.07);border:1px solid var(--line);padding:12px 16px}
+.stage.haspicks .notes{grid-row:5}
+.notes .lab{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);display:flex;justify-content:space-between;margin-bottom:6px}
+.notes p{margin:0 0 10px;font-size:18px;line-height:1.42}.notes p:last-child{margin:0}
+.notes .empty{color:rgba(255,255,255,.65);font-size:16px}
+/* without picks the notes grow down the left of the keys; with picks the card takes that space */
+.stage:not(.haspicks) .notes{grid-column:1/2;grid-row:5/7}
+.stage.haspicks .notes{grid-column:1/-1;grid-row:5}
+.picks{grid-column:1/2;grid-row:6;min-height:0;max-height:100%;overflow:auto;border-radius:20px;border:1.5px solid var(--gold);background:linear-gradient(135deg,rgba(231,162,60,.22),rgba(21,35,59,.9));padding:12px 14px}
+.stage:not(.haspicks) .picks{display:none}
+.picks h2{margin:0 0 8px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font:600 18px/1.1 var(--serif);color:#fff}
+.picks h2 i{flex:none;font:700 13px var(--font);font-style:normal;background:var(--gold);color:var(--navy);border-radius:11px;min-width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.picks ol{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.picks li{display:flex;gap:10px;font-size:16px;line-height:1.28}.picks li b{color:var(--gold);flex:none;width:14px}
+.keys{grid-column:2;grid-row:5/7;display:grid;grid-auto-rows:minmax(48px,clamp(48px,6.2dvh,64px));gap:12px;align-content:end}
+.stage.haspicks .keys{grid-row:6}
+.stage:not(.haspicks) .keys{grid-row:5/7}
+.key{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid var(--line);font-weight:700;color:#fff;font-size:16px;line-height:1.15;padding:4px 2px;min-width:0}
+.key small{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:2px}
+.key.val span{color:var(--gold)}
+.key.on{background:#fff;color:var(--navy)}
+.key.qr{flex-direction:row;gap:7px;padding:4px 8px}.key.qr span{font-size:15px;text-align:left}
+.toast{position:fixed;left:16px;right:16px;top:calc(8px + env(safe-area-inset-top));z-index:5;font-size:16px;color:var(--navy);background:var(--gold);border-radius:14px;padding:8px 12px;text-align:center;font-weight:700}
+.toast:empty{display:none}
+.bottom{display:grid;grid-template-columns:minmax(0,132fr) minmax(0,214fr);gap:12px;align-items:end;padding:0 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;width:100%;margin:0 auto}
+.bottom button{border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#fff;border:0}
+#prev{min-height:clamp(64px,11dvh,96px);background:rgba(255,255,255,.13);font-size:20px;font-weight:700}
+#nxt{min-height:clamp(112px,17dvh,160px);border-radius:44px;background:linear-gradient(160deg,var(--orange-hi),var(--orange));box-shadow:0 10px 28px rgba(226,92,15,.38)}
+#nxt b{font:700 40px/1 var(--font);letter-spacing:-.01em}
+#nxt small{display:block;font-weight:600;font-size:15px;opacity:.92;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 14px}
+button:active{filter:brightness(1.25)}
+/* round 2 polls: the poll for the slide on screen, with its live state in words and one key: Open poll or Close poll.
+   An orange outline and dot (and the orange Open poll key, white text at 4.85:1) while a poll is on the phones. */
+.pollbar{grid-column:1/-1;grid-row:4;min-width:0;display:flex;align-items:center;gap:12px;min-height:76px;border-radius:20px;padding:10px 10px 10px 16px;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+.pollbar.is-live{border-color:var(--btn);box-shadow:inset 0 0 0 1px var(--btn)}
+.pollbar.none{min-height:0;padding:10px 16px}
+.pbt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pbt b{display:flex;align-items:center;gap:8px;font-size:17px;line-height:1.2}
+.pbt b i{flex:none;width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45)}
+.pollbar.is-live .pbt b i{background:#ff9a5c;box-shadow:0 0 0 4px rgba(255,154,92,.25)}
+.pbt>span{font-size:15px;line-height:1.25;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbt>span.pbc{font-size:14px;font-weight:700;color:#fff;white-space:normal}   /* the counts wrap rather than lose the phones number */
+.pollbar.is-live .pbt>span{color:rgba(255,255,255,.9)}
+#pollkey{flex:none;min-height:56px;min-width:124px;padding:0 16px;border-radius:16px;font-weight:800;font-size:17px;background:var(--state-live);color:#fff}
+.pollbar.is-live #pollkey{background:var(--paper);color:var(--ink)}
+#pollkey:disabled{opacity:.55}
+#pollkey[hidden]{display:none}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="kick"><span id="pos">Slide loading</span><span class="apl" id="apl" hidden>Autoplay off</span><div class="live" id="live"><i></i><span>Connecting</span></div></div>
+  <h1 class="ttl" id="ttl">Loading the deck</h1>
+  <div class="nextup" id="next"></div>
+  <section class="pollbar none" id="pollbar" aria-label="Poll"><div class="pbt" role="status"><b id="pbs"><i aria-hidden="true"></i><span>Checking for a poll</span></b><span id="pbq"></span><span class="pbc" id="pbc"></span></div><button id="pollkey" type="button" hidden>Open poll</button></section>
+  <section class="notes" id="notes"><p class="empty">Loading notes.</p></section>
+  <section class="picks" id="picks"><h2><span>Questions to answer</span> <i id="pickn">0</i></h2><ol id="picklist"></ol></section>
+  <div class="keys">
+    <button class="key" id="bk" aria-pressed="false">Blackout</button>
+    <button class="key val" id="pace" aria-label="Builds, tap to change"><small>Builds</small><span id="pacev">Click</span></button>
+    <button class="key val" id="fx" aria-label="Effects, tap to change"><small>Effects</small><span id="fxv">Animated</span></button>
+    <button class="key qr" id="qr" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><rect x="2" y="2" width="6" height="6"/><rect x="12" y="2" width="6" height="6"/><rect x="2" y="12" width="6" height="6"/><path d="M12 12h2v2h-2zM16 16h2v2h-2zM12 17h2M17 12h1"/></svg><span id="qrl">Show join QR</span></button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<div class="bottom">
+  <button id="prev" aria-label="Previous slide"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back</span></button>
+  <button id="nxt" aria-label="Next slide"><b>Next</b><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><small id="nxs">Loading</small></button>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+let R = null, ST = null, ws = null, wsOk = false, wsTry = 0, lastProbe = "", toastT = 0;
+const CID = Math.random().toString(36).slice(2, 12);
+async function j(url, body) {
+  let r;
+  try {
+    r = await fetch(url, body === undefined ? { credentials: "same-origin", cache: "no-store" }
+      : { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json", "x-cid": CID }, body: JSON.stringify(body) });
+  } catch (e) { return { error: "offline" }; }
+  if (r.status === 401 || r.status === 403) { location.href = "/presenter?next=/remote"; return {}; }
+  try { return await r.json(); } catch (e) { return { error: "bad answer" }; }
+}
+function toast(t) { $("#toast").textContent = t; clearTimeout(toastT); if (t) toastT = setTimeout(() => { $("#toast").textContent = ""; }, 3500); }
+const sv = k => (ST && k in ST) ? ST[k] : (R && k in R ? R[k] : undefined);   // live socket state first, then the last /api/remote
+function setOn(el, on) { el.classList.toggle("on", !!on); el.setAttribute("aria-pressed", on ? "true" : "false"); }
+const PACE = { auto: "Autoplay", click: "Click" }, FXN = { calm: "Calm", standard: "Animated", full: "Super animated" }, FXORDER = ["calm", "standard", "full"];
+function paintState() {
+  const pace = sv("pace"), fx = sv("fx"), qr = sv("qr"), bk = sv("blackout");
+  $("#pacev").textContent = PACE[pace] || "Click"; $("#fxv").textContent = FXN[fx] || "Animated";
+  setOn($("#qr"), qr); $("#qrl").textContent = qr ? "Hide join QR" : "Show join QR";
+  setOn($("#bk"), bk); $("#bk").textContent = bk ? "Blacked out" : "Blackout";
+  // v4 a23 step: autoplay for the slide on screen, as set in Admin (display only; slides without pieces show nothing)
+  const au = sv("auto") || {}, cs = R && R.now != null ? R.slides.find(x => x.i === R.now) : null, ap = $("#apl");
+  const has = !!(cs && typeof au[cs.id] === "boolean");
+  ap.hidden = !has; if (has) { ap.textContent = au[cs.id] ? "Autoplay on" : "Autoplay off"; ap.classList.toggle("on", au[cs.id]); }
+}
+function paint() {
+  if (!R) return;
+  const SH = R.slides.filter(x => !x.hidden), byI = {}; R.slides.forEach(x => { byI[x.i] = x; });   // v4 c: shown slides, in the saved order
+  const n = SH.length, i = R.now, at = i == null ? -1 : SH.findIndex(x => x.i === i);
+  const cur = i == null ? null : byI[i];
+  $("#pos").textContent = i == null ? "Not started, " + n + " slides" : (at < 0 ? "Hidden slide" : "Slide " + (at + 1) + " of " + n);
+  $("#ttl").textContent = cur ? cur.title : "Waiting for slide one";
+  const box = $("#notes"); box.innerHTML = '<div class="lab"><span>Notes</span><span>Scroll</span></div>';
+  const notes = R.notes && R.notes.length ? R.notes : R.nextNotes;
+  (notes || []).forEach(t => { const p = document.createElement("p"); p.textContent = t; box.appendChild(p); });
+  if (!(notes || []).length) box.insertAdjacentHTML("beforeend", '<p class="empty">No notes for this slide.</p>');
+  const nx = R.next != null ? byI[R.next] : null;
+  const nl = $("#next"); nl.textContent = "";
+  if (nx) { const b = document.createElement("b"); b.textContent = "Next: "; nl.append(b, nx.title); } else nl.textContent = "End of deck.";
+  $("#nxs").textContent = nx ? nx.title : "Last slide";
+  // v4 a17 remote: the answers Maisie picked for Aran; the card exists only while there are some
+  const picks = Array.isArray(R.picks) ? R.picks.filter(p => p && p.text) : [];
+  const pl = $("#picklist"); pl.innerHTML = "";
+  picks.forEach(p => { const li = document.createElement("li"); li.textContent = p.text; pl.appendChild(li); });
+  $("#pickn").textContent = picks.length; $("#stage").classList.toggle("haspicks", picks.length > 0);
+  paintState(); paintPoll();
+}
+function applyState(st) {
+  if (!st) return;
+  if (st.qv != null && st.qv !== PQV) loadPolls(st.qv);
+  ST = st;
+  if (st.probe && !st.probe.ack && st.probe.id !== lastProbe) { lastProbe = st.probe.id; j("/api/ctl/probeack", { id: st.probe.id }); }
+  paintState(); paintPoll();
+}
+/* ---- round 2 polls: the key opens or closes the poll for the slide on screen. Close always names the live poll.
+   With no poll live it opens the first poll of this slide that is still open, or reopens the one closed last. */
+let PQ = null, PQV, PBUSY = false;
+const TAL = {};
+// a poll that is a row of another (cover and close inside readiness) is never listed or opened on its own
+const ownPolls = qs => { const rowQ = new Set(qs.flatMap(q => Array.isArray(q.rows) ? q.rows.map(r => r && r.q).filter(Boolean) : [])); return qs.filter(q => !q.part && !rowQ.has(q.id)); };
+async function loadPolls(qv) {
+  PQV = qv; const r = await j("/api/poll/questions");
+  if (r && Array.isArray(r.questions)) { PQ = ownPolls(r.questions); PQV = r.qv; }   // readiness parts (cover, close) ride inside readiness
+  paintPoll();
+}
+// a two row poll (readiness) tallies as {type:"rows", rows:[{label,counts,total}]}; one send answers both rows
+const tallyOk = t => !!t && (Array.isArray(t.counts) || Array.isArray(t.rows));
+const votesOf = t => !t ? 0 : Array.isArray(t.rows) ? Math.max(0, ...t.rows.map(r => +r.total || 0)) : (t.total || 0);
+async function loadTally(id) { const r = await j("/api/poll/tally?q=" + encodeURIComponent(id)); if (tallyOk(r)) { TAL[id] = r; paintPoll(); } }
+function pollTarget() {
+  const lq = sv("liveQ"), closed = sv("closed") || [];
+  if (lq) return { q: lq, live: true };
+  if (!PQ || !R || R.now == null) return null;
+  const cs = R.slides.find(x => x.i === R.now), mine = cs ? PQ.filter(q => q.slide === cs.id) : [];
+  if (!mine.length) return null;
+  const open = mine.find(q => !closed.includes(q.id));
+  if (open) return { q: open.id, live: false };
+  const last = closed.filter(id => mine.some(q => q.id === id)).pop();
+  return { q: last || mine[0].id, live: false, reopen: true };
+}
+function paintPoll() {
+  const t = pollTarget(), bar = $("#pollbar"), key = $("#pollkey");
+  const q = t && PQ ? PQ.find(x => x.id === t.q) : null, n = q ? PQ.indexOf(q) + 1 : 0;
+  bar.classList.toggle("is-live", !!(t && t.live)); bar.classList.toggle("none", !t);
+  const v = t ? votesOf(TAL[t.q]) : 0, ph = sv("viewers") || 0;
+  // state in words first: Live, Ready or Closed, then which poll, then votes in and phones connected
+  $("#pbs span").textContent = !t ? (PQ ? "No poll on this slide" : "Checking for a poll")
+    : (t.live ? "Live" : t.reopen ? "Closed" : "Ready") + (n ? ", poll " + n : "");
+  $("#pbc").textContent = t ? v + (v === 1 ? " vote" : " votes") + " in, " + ph + (ph === 1 ? " phone" : " phones") + " connected" : "";
+  $("#pbq").textContent = q ? q.text : t && t.live ? "A poll is on the phones." : "";
+  key.hidden = !t; key.disabled = PBUSY;
+  key.textContent = PBUSY ? (t && t.live ? "Closing" : "Opening") : t && t.live ? "Close poll" : t && t.reopen ? "Reopen poll" : "Open poll";
+  key.setAttribute("aria-label", key.textContent + (q ? ": " + q.text : ""));
+  if (t && !TAL[t.q]) { TAL[t.q] = { total: 0, counts: [] }; loadTally(t.q); }
+}
+$("#pollkey").onclick = async () => {
+  const t = pollTarget(); if (!t || PBUSY) return;
+  PBUSY = true; paintPoll();
+  const r = await j(t.live ? "/api/ctl/pollclose" : "/api/ctl/pollopen", { q: t.q });
+  PBUSY = false;
+  if (r && r.ok) { ST = Object.assign({}, ST || {}, { roomQ: r.roomQ || null, closed: r.closed || [], liveQ: r.liveQ || null }); toast(t.live ? "Poll closed. Phones are back on the slide." : "Poll open on every phone."); loadTally(t.q); }
+  else toast(r && r.error === "offline" ? "No connection. Tap again." : "That did not work.");
+  paintPoll(); load();
+};
+setInterval(() => { const lq = sv("liveQ"); if (lq && document.visibilityState === "visible" && !wsOk) loadTally(lq); }, 2000);
+async function load() {
+  const r = await j("/api/remote");
+  if (r && r.slides) { R = r; applyState(r.state); paint(); }
+  return !!(r && r.slides);
+}
+// A slide move: show the new slide at once from the answer, then fetch its notes. Next and Back are never dead:
+// before the first load they still ask the server, and a refusal or a lost connection is said out loud.
+async function go(url, body, edge) {
+  const r = await j(url, body);
+  if (r && r.error === "offline") { toast("No connection. Tap again."); load(); return; }
+  if (r && (r.error === "end" || r.error === "start")) { toast(edge); load(); return; }
+  if (r && r.error) { toast("That did not work."); load(); return; }
+  if (r && r.state && R && r.state.slide != null) { R.now = r.state.slide; applyState(r.state); paint(); }   // v4 c: the next slide comes from load(), it follows the saved order
+  load();
+}
+// A mode or switch: the button answers at once, the server's word replaces it a moment later.
+async function setMode(key, val, url, body) {
+  ST = Object.assign({}, ST || {}, { [key]: val }); paintState();
+  const r = await j(url, body);
+  if (r && r.error) toast(r.error === "offline" ? "No connection. Tap again." : "That did not work.");
+  await load();
+}
+$("#nxt").onclick = () => go("/api/ctl/next", {}, "That is the last slide.");
+$("#prev").onclick = () => go("/api/ctl/back", {}, "That is the first slide.");
+$("#pace").onclick = () => { const m = sv("pace") === "click" ? "auto" : "click"; setMode("pace", m, "/api/ctl/pace", { mode: m }); };
+$("#fx").onclick = () => { const l = FXORDER[(FXORDER.indexOf(sv("fx")) + 1) % FXORDER.length]; setMode("fx", l, "/api/ctl/effects", { level: l }); };   // Calm, Animated, Super animated, then round again
+$("#qr").onclick = () => { const on = !sv("qr"); setMode("qr", on, "/api/ctl/qr", { on }); };
+$("#bk").onclick = () => { const on = !sv("blackout"); setMode("blackout", on, "/api/ctl/blackout", { on }); };
+document.addEventListener("keydown", e => { if (e.target.tagName === "INPUT") return; if (e.key === "ArrowRight") $("#nxt").click(); if (e.key === "ArrowLeft") $("#prev").click(); });
+function connect() {
+  if (!window.WebSocket || ws) return;
+  let w; try { w = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/api/ws"); } catch (e) { return; }
+  ws = w;
+  w.onopen = () => { wsOk = true; wsTry = 0; $("#live").classList.add("on"); $("#live span").textContent = "Live"; load(); hello(); };
+  w.onmessage = e => { try { const m = JSON.parse(e.data); if (m.t === "poll") { Object.entries(m.tallies || {}).forEach(([id, t]) => { if (tallyOk(t)) TAL[id] = t; }); paintPoll(); return; }
+    if (m.t === "state") { const old = ST; applyState(m.s);
+    if (!R || m.s.slide !== R.now || (old && old.mv !== m.s.mv) || (old && JSON.stringify(old.plan) !== JSON.stringify(m.s.plan))) load(); } } catch (_) {} };
+  const gone = () => { if (ws !== w) return; wsOk = false; ws = null; $("#live").classList.remove("on"); $("#live span").textContent = "Reconnecting"; setTimeout(connect, Math.min(8000, 700 * (++wsTry))); };
+  w.onclose = gone; w.onerror = gone;
+}
+// Pairing heartbeat: the command center shows this phone as paired while these keep arriving.
+function hello() { if (document.visibilityState === "visible") j("/api/ctl/hello", { k: "remote" }); }
+setInterval(hello, 5000);
+setInterval(() => { if (ws && wsOk) { try { ws.send("ping"); } catch (_) {} } }, 20000);
+setInterval(() => { if (document.visibilityState === "visible" && (!wsOk || !R)) load(); }, 1500);   // until the first answer lands, and whenever the socket is down
+setInterval(() => { if (document.visibilityState === "visible" && wsOk) load(); }, 8000);          // picks and notes catch up even if a frame is missed
+// Screen lock: the socket usually died while the phone slept. On wake, drop it and start over.
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+  if (ws) { const w = ws; ws = null; wsOk = false; try { w.close(); } catch (_) {} }
+  $("#live").classList.remove("on"); $("#live span").textContent = "Reconnecting";
+  wsTry = 0; connect(); load(); hello();
+});
+window.addEventListener("pageshow", e => { if (e.persisted) { wsTry = 0; connect(); load(); hello(); } });
+load(); connect(); hello(); loadPolls();
+</script>
+</body>
+</html>

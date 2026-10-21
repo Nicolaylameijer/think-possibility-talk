@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#15233b">
+<link rel="icon" href="data:,">
+<title>Talk to Maisie</title>
+<link rel="stylesheet" href="/ui.css">
+<style>
+@font-face{font-family:'Public Sans';font-weight:400 700;font-display:swap;src:url(/fonts/publicsans-400.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:400 700;font-display:swap;src:url(/fonts/fraunces-400.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:400 700;font-display:swap;src:url(/fonts/fraunces-500i.woff2) format('woff2')}
+:root{
+  --navy:#15233b; --navy2:#1d3155; --deep:#0f1a2e; --ink:#15233b; --ink-soft:#41506b;
+  --orange:#e25c0f; --orange-deep:#c44a06; --gold:#e7a23c; --cream:#f4efe5; --paper:#fbf8f2; --card:#fff;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif; --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow-x:hidden}
+body{background:var(--paper);color:var(--ink);font:16px/1.45 var(--sans);-webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;min-height:100dvh}
+button,input,textarea{font:inherit;color:inherit}
+.top{background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:5;box-shadow:0 6px 18px -12px rgba(15,26,46,.8)}
+.top img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex:none;background:var(--navy2)}
+.top .who{flex:1;min-width:0}
+.top h1{font:600 20px/1.1 var(--serif);margin:0;letter-spacing:-.01em}
+.top p{margin:2px 0 0;font-size:13px;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{display:flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(255,255,255,.8);flex:none}
+.st i{width:9px;height:9px;border-radius:50%;background:#8a94a6}
+.st.on i{background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.22)}
+.top a.back{color:rgba(255,255,255,.75);text-decoration:none;font-size:22px;line-height:1;padding:4px 2px;flex:none}
+.notice{background:var(--cream);color:var(--ink-soft);font-size:13px;padding:8px 16px;border-bottom:1px solid #e8dfcf}
+main{flex:1;display:flex;flex-direction:column;width:100%;max-width:640px;margin:0 auto}
+/* join */
+.join{padding:28px 20px;display:flex;flex-direction:column;gap:14px}
+.join .hero{display:flex;gap:16px;align-items:center}
+.join .hero img{width:84px;height:84px;border-radius:20px;object-fit:cover;box-shadow:0 14px 30px -18px rgba(21,35,59,.8);flex:none}
+.join h2{font:600 28px/1.15 var(--serif);margin:0;letter-spacing:-.015em}
+.join h2 em{font-style:italic;font-weight:500;color:var(--orange)}
+.join p{margin:0;color:var(--ink-soft)}
+.join label{font-weight:600;font-size:14px;margin-top:6px}
+.join input{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid #d9d1c2;background:#fff;font-size:18px;outline:none}
+.join input:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(226,92,15,.14)}
+.btn{appearance:none;border:0;border-radius:14px;background:var(--orange);color:#fff;font-weight:700;padding:14px 18px;font-size:17px;cursor:pointer}
+.btn:active{background:var(--orange-deep)}
+.btn:disabled{opacity:.55}
+.join .optin{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:14.5px;margin-top:2px}
+.join .optin input{width:22px;height:22px;margin-top:1px;flex:none;accent-color:var(--orange)}
+.join .fine{font-size:13px}
+.err{color:#b42318;font-size:14px;min-height:1.2em;margin:0}
+/* chat */
+.chat{flex:1;display:none;flex-direction:column}
+.log{flex:1;padding:16px 14px 8px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:86%;padding:10px 14px;border-radius:18px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:15.5px}
+.m.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:6px}
+.m.her{align-self:flex-start;background:var(--card);border:1px solid #ebe3d4;border-bottom-left-radius:6px;box-shadow:0 6px 16px -14px rgba(21,35,59,.5)}
+.m.pop{align-self:flex-start;background:#fff7ea;border:2px solid var(--gold);border-bottom-left-radius:6px}
+.m.pop b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:3px}
+.m.sys{align-self:center;background:none;color:var(--ink-soft);font-size:13px;text-align:center;padding:4px 8px}
+.typing{align-self:flex-start;display:none;gap:5px;padding:12px 14px;background:var(--card);border:1px solid #ebe3d4;border-radius:18px;border-bottom-left-radius:6px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--ink-soft);opacity:.4;animation:b 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.typing i{animation:none}}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 14px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border:1.5px solid #e2d7c4;background:#fff;border-radius:999px;padding:8px 13px;font-size:14px;color:var(--ink);cursor:pointer}
+.chips button:active{border-color:var(--orange)}
+.bar{position:sticky;bottom:0;background:var(--paper);border-top:1px solid #ebe3d4;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:flex-end}
+.bar textarea{flex:1;resize:none;max-height:120px;min-height:46px;padding:12px 14px;border-radius:16px;border:1.5px solid #d9d1c2;background:#fff;font-size:16px;outline:none}
+.bar textarea:focus{border-color:var(--orange)}
+.bar .btn{padding:12px 16px;min-height:46px}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--navy);color:#fff;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;box-shadow:0 12px 30px -12px rgba(15,26,46,.8);
+  transition:opacity .25s,transform .25s;max-width:calc(100% - 32px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.off{display:none;margin:10px 14px 0;padding:10px 14px;border-radius:12px;background:#fff;border:1px dashed #cfc5b2;color:var(--ink-soft);font-size:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="/" aria-label="Back to the start page">&#8249;</a>
+  <img src="/img/maisie-avatar.jpg" alt="">
+  <div class="who"><h1>Maisie</h1><p id="sub">Aran's AI assistant</p></div>
+  <div class="st" id="st"><i></i><span>Connecting</span></div>
+</header>
+<div class="notice">Messages go to an AI service. Please do not paste anything confidential or personal.</div>
+<main>
+  <section class="join" id="join">
+    <div class="hero"><img src="/img/maisie-avatar.jpg" alt="">
+      <h2>Hi, I am Maisie. <em>What should I call you?</em></h2></div>
+    <p id="joinLede">Ask me about anything in today's session. I can hand you the prompts Aran showed, explain a slide, or send an idea up to the big screen for Aran to approve.</p>
+    <label for="name">First name</label>
+    <input id="name" autocomplete="given-name" maxlength="32" enterkeyhint="next" placeholder="First name">
+    <label for="last" class="reg">Last name</label>
+    <input id="last" class="reg" autocomplete="family-name" maxlength="40" enterkeyhint="next" placeholder="Last name">
+    <label for="email" class="reg">Email</label>
+    <input id="email" class="reg" type="email" inputmode="email" autocomplete="email" maxlength="120" enterkeyhint="go" placeholder="you@example.org">
+    <label class="reg optin"><input type="checkbox" id="optin"><span>Aran may email me follow-up material from this event. Optional. If you leave this unticked, you will not be emailed.</span></label>
+    <p class="fine reg">Your name and email are shown to Aran with the questions you send. They are not sent to the AI service.</p>
+    <p class="err" id="joinErr" role="alert"></p>
+    <button class="btn" id="joinBtn">Start chatting</button>
+  </section>
+  <section class="chat" id="chat">
+    <div class="off" id="off">Maisie is offline right now. The slides and your notes still work.</div>
+    <div class="log" id="log" aria-live="polite">
+      <div class="typing" id="typing" aria-label="Maisie is typing"><i></i><i></i><i></i></div>
+    </div>
+    <div class="chips" id="chips">
+      <button>What is on screen now?</button>
+      <button>Give me the four prompts</button>
+      <button>What are the four moves?</button>
+    </div>
+    <form class="bar" id="bar">
+      <textarea id="msg" rows="1" maxlength="600" placeholder="Message Maisie" enterkeyhint="send" aria-label="Message Maisie"></textarea>
+      <button class="btn" id="send" type="submit">Send</button>
+    </form>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const BR = /*__BRAND__*/null || {};
+const $ = s => document.querySelector(s);
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem(k) || "null") || d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+let ME = null, SINCE = "", BUSY = false, ONLINE = false, REG = true;
+const KEY = () => "maisie-chat-" + (ME || "");
+
+async function api(path, body) {
+  const r = await fetch("/api/maisie/" + path, body ? { method: "POST", headers: { "Content-Type": "application/json" },
+    credentials: "same-origin", body: JSON.stringify(body) } : { credentials: "same-origin" });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  return { status: r.status, ...j };
+}
+
+function status(on) {
+  ONLINE = on;
+  $("#st").classList.toggle("on", on);
+  $("#st span").textContent = on ? "Online" : "Offline";
+  $("#off").style.display = on ? "none" : "block";
+}
+
+function nearBottom() { return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80; }
+function toBottom() { window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" }); }
+
+function add(kind, text, save = true, label = "") {
+  const d = document.createElement("div");
+  d.className = "m " + kind;
+  if (label) { const b = document.createElement("b"); b.textContent = label; d.appendChild(b); }
+  d.appendChild(document.createTextNode(text));
+  $("#log").insertBefore(d, $("#typing"));
+  if (save) { const h = store.get(KEY(), []); h.push([kind, text, label]); store.set(KEY(), h.slice(-60)); }
+  return d;
+}
+
+function typing(on) { $("#typing").style.display = on ? "flex" : "none"; if (on && nearBottom()) toBottom(); }
+
+function showChat() {
+  $("#join").style.display = "none"; $("#chat").style.display = "flex";
+  $("#sub").textContent = "Chatting as " + ME;
+  $("#log").querySelectorAll(".m").forEach(n => n.remove());
+  const h = store.get(KEY(), []);
+  if (!h.length) add("her", "Hi " + ME + ". Ask me anything about today's session. I cannot see your email or files.", true);
+  else h.forEach(([k, t, l]) => add(k, t, false, l));
+  SINCE = store.get(KEY() + "-since", "");
+  setTimeout(toBottom, 50);
+  poll();
+}
+
+async function join() {
+  const name = $("#name").value.trim(), last = $("#last").value.trim(), email = $("#email").value.trim();
+  $("#joinErr").textContent = "";
+  if (!name) { $("#joinErr").textContent = "Type your first name first."; return; }
+  if (REG && !last) { $("#joinErr").textContent = "Type your last name too."; return; }
+  if (REG && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { $("#joinErr").textContent = "That email address does not look right."; return; }
+  $("#joinBtn").disabled = true;
+  try {
+    const r = await api("join", REG ? { first: name, last, email, optin: $("#optin").checked } : { name });
+    if (r.status === 200 && r.name) { ME = r.name; showChat(); }
+    else $("#joinErr").textContent = r.error || "That did not work. Try again.";
+  } catch (e) { $("#joinErr").textContent = "No connection. Try again."; }
+  $("#joinBtn").disabled = false;
+}
+
+async function send(text) {
+  text = (text || "").trim();
+  if (!text || BUSY) return;
+  BUSY = true; $("#send").disabled = true;
+  add("me", text); $("#msg").value = ""; grow(); toBottom(); typing(true);
+  try {
+    const r = await api("chat", { text });
+    if (r.status === 401) { ME = null; $("#chat").style.display = "none"; $("#join").style.display = "flex"; $("#joinErr").textContent = "Please join again."; }
+    else if (r.reply) { add("her", r.reply); if (r.offline) status(false); }
+    else add("sys", r.error === "busy" ? "Still working on your last message." : "That did not go through. Try again.", false);
+  } catch (e) { add("sys", "No connection. Try again.", false); }
+  typing(false); BUSY = false; $("#send").disabled = false;
+  if (nearBottom()) toBottom();
+}
+
+let toastTimer;
+function toast(t) {
+  const el = $("#toast"); el.textContent = t; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 5000);
+}
+$("#toast").onclick = () => { $("#toast").classList.remove("show"); toBottom(); };
+
+let pollTimer;
+async function poll() {
+  clearTimeout(pollTimer);
+  if (ME && document.visibilityState === "visible") {
+    try {
+      const r = await api("inbox?since=" + encodeURIComponent(SINCE));
+      if (r.status === 401) { ME = null; return; }
+      for (const m of r.messages || []) {
+        const wasDown = nearBottom();
+        add("pop", m.text, true, m.kind === "broadcast" ? "Maisie, to everyone" : "Maisie, just for you");
+        SINCE = m.id; store.set(KEY() + "-since", SINCE);
+        try { navigator.vibrate && navigator.vibrate(60); } catch (e) {}
+        if (wasDown) toBottom(); else toast("New from Maisie: " + m.text);
+      }
+    } catch (e) {}
+  }
+  pollTimer = setTimeout(poll, 5000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") { poll(); refresh(); } });
+
+function queueCopy(q) {
+  $("#joinBtn").textContent = q ? "Join" : "Start chatting";
+  $("#joinLede").textContent = q ? "Send your questions here. They go to Aran's board, and near the end of the session Maisie reads out the best ones."
+    : "Ask me about anything in today's session. I can hand you the prompts Aran showed, explain a slide, or send an idea up to the big screen for Aran to approve.";
+  $("#msg").placeholder = q ? "Your question for Aran" : "Message Maisie";
+  $("#send").textContent = q ? "Send" : "Send";
+  $("#chips").style.display = q ? "none" : "flex";
+}
+async function refresh() {
+  try { const s = await api("state"); status(!!s.online || !!s.queue); if (s.queue !== undefined) queueCopy(!!s.queue);
+    if (s.reg !== undefined && s.reg !== REG) { REG = !!s.reg; document.querySelectorAll(".reg").forEach(n => n.style.display = REG ? "" : "none"); }
+    return s; } catch (e) { status(false); return {}; }
+}
+
+function grow() { const t = $("#msg"); t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 120) + "px"; }
+$("#msg").addEventListener("input", grow);
+$("#msg").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); send($("#msg").value); } });
+$("#bar").addEventListener("submit", e => { e.preventDefault(); send($("#msg").value); });
+$("#chips").addEventListener("click", e => { if (e.target.tagName === "BUTTON") send(e.target.textContent); });
+$("#joinBtn").onclick = join;
+["#name", "#last", "#email"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") join(); }));
+
+(async () => {
+  const s = await refresh();
+  setInterval(refresh, 30000);
+  if (s.me && s.me.name) { ME = s.me.name; showChat(); return; }
+  // the account is the sign up: join with the name on the account, no second form
+  try { const r = await api("join", {}); if (r.status === 200 && r.name) { ME = r.name; showChat(); return; } } catch (e) {}
+  $("#join").style.display = "flex"; $("#name").focus({ preventScroll: true });
+})();
+</script>
+<script src="/_deck/poll.js"></script><!-- round 2 polls: a live poll takes this phone over here too -->
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "id": "guardrails",
+  "builds": "click",
+  "t": "cards",
+  "kick": "WHERE DO I START · THE GUARDRAILS",
+  "title": "Possibility is not permission.",
+  "em": "not permission.",
+  "guard4": true,
+  "items": [
+    [
+      "Did you give it your values?",
+      "Set your agency's rules and a reviewer from day one, or you raise a 6-foot-9 lineman who won't clean his room."
+    ],
+    [
+      "Did you check its work?",
+      "Trust it, then verify it against your code, your policy and your judgment."
+    ],
+    [
+      "Is it public, and is it yours?",
+      "Nothing sensitive goes in. Nothing goes out under your name that you didn't read."
+    ],
+    [
+      "Not sure? Have you asked IT?",
+      "Your IT team knows which tools are approved. Ask before you start, not after."
+    ]
+  ],
+  "hl": "It's a powerful tool. Use it responsibly.",
+  "ticks": ["H1", "H2", "H3"],
+  "notes": [
+    "3:15. Three minutes. This room needs to hear the guardrails before they will let themselves enjoy the possibilities, so give them the guardrails with a smile. The lineman gets the laugh. Raising an AI is like raising a kid: give it values early and it grows up useful. Skip that step and you get a 6-foot-9 lineman who refuses to clean his room. Strong, fast, and no idea where the line is. The brief from this morning is the values. If they skipped this morning, the brief is the homework. Second card is the one that protects them professionally. Move three gives you ten options, three of them wild. That is a thinking step. The code, the policy and your judgment decide which one survives, and that decision is yours and documented. Possibility thinking never skips the compliance step. It happens before it. Third card is the same rule as this morning: nothing sensitive in, nothing out under your name unread. Fourth card: if you are unsure, ask your IT team. Then the closing line on the slide: it's a powerful tool, use it responsibly. Transition: \"One experiment. That's all I'm asking for.\""
+  ]
+}

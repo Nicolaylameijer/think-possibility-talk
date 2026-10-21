@@ -1,0 +1,23 @@
+{
+  "id": "move1",
+  "builds": "click",
+  "t": "move",
+  "n": 1,
+  "kick": "MOVE 1 OF 4 · CHALLENGER",
+  "title": "Challenge my assumptions",
+  "em": "assumptions",
+  "p": "P1",
+  "blockH": "THE COOPERATIVE CONTRACT",
+  "assume": [
+    "Assumes the cooperative's scope actually matches ours",
+    "Assumes the lead agency competed it the way our code requires",
+    "Assumes the department has described the problem, not just the product",
+    "Assumes no local vendor would have bid if we ran our own RFP"
+  ],
+  "key": 2,
+  "hl": "Your turn: Pick one assumption worth testing and run the prompt. Which ones had you not considered?",
+  "ticks": ["M1"],
+  "notes": [
+    "2:51. Six minutes: two live, three theirs, one with a neighbor. Run it live on the cooperative contract example. The tool will give you a list something like the right card. The teaching moment is the ranking: most people treat all assumptions as equal. The one that breaks the plan is \"the department has described the problem, not just the product,\" because if that one is wrong, the other three do not matter. Say why this is a challenger move and not a research move: you are not asking it what to do. You are asking it to show you the load-bearing walls in a decision you have already half made. The tool is good at this because it has no ego invested in your plan. Three minutes for them. Walk the room. The neighbor question: which assumption on your list surprised you? If a table has no device, one person reads their plan, the other lists assumptions out loud. It works almost as well and it is more fun. Transition: \"Move two is the same idea turned inside out.\""
+  ]
+}

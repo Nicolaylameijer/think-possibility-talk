@@ -1,0 +1,53 @@
+/* Shared UI tokens for the app screens: the audience phone (/app), the presenter command center (/admin),
+   the phone remote (/remote) and the editor. One set, so every screen Aran or the room touches looks like one product.
+   Brand colours stay recognisable (navy, orange, amber, green from brand.json); the surfaces are calmer, with more
+   space, fewer borders and a tighter type scale. Slides keep their own deck tokens (public/_deck/tokens.css + brand.css).
+   Contrast (WCAG, checked): white on --live #c44a06 is 4.85:1, white on --kit #1a6e36 is 6.31:1, white on --ink-bg
+   #15233b is 15.7:1, --ink #15233b on --paper #f7f1e8 is 14.0:1. Brand orange #e25c0f is 3.64:1 with white, so it is
+   used for marks, bars and focus rings only, never behind small white text.
+   Round 2 light restyle: the phone screens are LIGHT by default, with the exact light tokens of the v4 app (--deep #f3f5f9
+   page, --panel #fff cards, --line #d3dae8, navy ink #0f1a2e) and orange only on buttons and marks (--btn #c44a06, white on it
+   4.85:1). Green (--ok #1a6e36, white on it 6.31:1) is for success only. No full orange fill anywhere on the phone. */
+@font-face{font-family:'Public Sans';font-weight:400 700;font-display:swap;src:url(/fonts/publicsans-400.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-weight:400 700;font-display:swap;src:url(/fonts/fraunces-600.woff2) format('woff2')}
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:400 700;font-display:swap;src:url(/fonts/fraunces-500i.woff2) format('woff2')}
+:root{
+  /* brand */
+  --brand:#e25c0f;          /* marks, bars, focus: not a text background */
+  --brand-strong:#c44a06;   /* fills that carry white text */
+  --amber:#e7a23c;
+  --navy:#15233b; --navy-deep:#0f1a2e; --navy-2:#1d2d4a; --navy-3:#283a5b;
+  --paper:#f7f1e8; --paper-2:#efe7da; --white:#ffffff;
+  --green:#1E7A3C;
+
+  /* the three phone states: following, a live poll, the take-home kit */
+  --state-follow:#15233b; --state-follow-2:#1d2d4a;
+  --state-live:#c44a06;   --state-live-2:#a93f05;
+  --state-kit:#1a6e36;    --state-kit-2:#145a2c;
+  /* light surfaces, taken from the v4 app light theme */
+  --deep:#f3f5f9; --panel:#fff; --line:#d3dae8; --line2:#c3ccdc; --edge:#7d8aa3; --press:#e4eaf4;
+  --fg:#0f1a2e; --text:#1c2740; --soft:#34415a; --steel:#4b5872; --mute-l:#56627a;
+  --btn:#c44a06; --btn-2:#a93f05; --btnfg:#fff; --alertbg:rgba(196,74,6,.1);
+  --ok:#1a6e36; --ok-bg:#e8f4ec; --ok-line:#9fd0b0;
+  --shadow-l:0 1px 2px rgba(15,26,46,.06),0 6px 18px rgba(15,26,46,.07);
+  --on-state:#ffffff; --on-state-2:rgba(255,255,255,.78); --on-state-3:rgba(255,255,255,.6);
+
+  /* ink on paper */
+  --ink:#15233b; --ink-2:#46536b; --ink-3:#6b7689;
+  --line-on-dark:rgba(255,255,255,.12);
+
+  /* type: Fraunces for the one big line per screen, Public Sans for everything else */
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --t-xs:13px; --t-sm:15px; --t-md:17px; --t-lg:20px; --t-xl:26px; --t-2xl:32px; --t-3xl:44px; --t-4xl:64px;
+  --lh-tight:1.12; --lh:1.45;
+
+  /* space, radius, depth: fewer borders, more air */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
+  --r-sm:10px; --r:16px; --r-lg:24px; --r-pill:999px;
+  --shadow:0 1px 2px rgba(15,26,46,.06),0 8px 24px rgba(15,26,46,.08);
+  --shadow-lift:0 2px 4px rgba(15,26,46,.10),0 16px 40px rgba(15,26,46,.16);
+  --tap:56px;               /* every tap target at least this tall on the phone */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --focus:0 0 0 3px var(--amber);
+}

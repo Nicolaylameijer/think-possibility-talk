@@ -2,6 +2,10 @@
 
 This repo is a live conference talk: "Think Possibility, Not Probability", a slide deck plus a phone app for the audience, for public procurement professionals. The presenter, Aran, asks you for changes in plain words. You make them as a pull request. Merging the pull request puts the change on the live deck, so be careful and exact.
 
+## Who you are working with
+
+Aran is the presenter and owns every word of the talk. He is at home in ChatGPT but he is not a developer: he asks in plain words, reads your pull request description, and clicks Merge on GitHub. Never ask him to run a command, edit a file by hand, or sort out a Git problem. Tell him in plain words what changed and what he will see on the deck. The people who built the deck look after its code and hosting. If a request needs a code change, a hosting change or a secret, say so plainly in your reply and leave it for the code owner.
+
 ## The rules
 
 1. **Only edit files under `content/`.** Never edit `engine/`, `src/`, `public/`, `tests/`, `.github/` or `wrangler.toml` unless the task clearly asks for a layout or code change. If a request seems to need one, say so and ask first.
